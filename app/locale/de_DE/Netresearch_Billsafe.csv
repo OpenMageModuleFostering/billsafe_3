@@ -67,4 +67,7 @@
 "I agree with the <a href=""%s"" target=""_blank"">privacy policy</a>, the <a href=""%s"" target=""_blank"">credit check</a> of <a href=""%s"" target=""_blank"">Paypal</a>.", "Ich stimme den <a href=""%s"" target=""_blank"">Datenschutzgrundsätzen</a> und der <a href=""%s"" target=""_blank"">Bonitätsprüfung</a> von <a href=""%s"" target=""_blank"">PayPal</a> zu."
 "The <a href=""%s"" target=""_blank"">BillSAFE terms and conditions</a> are applied.", "Es gelten die <a href=""%s"" target=""_blank"">Allgemeinen Geschäftsbedingungen</a> für den Rechnungskauf."
 "Please select another payment method!", "Bitte wählen Sie eine andere Zahlungsart!"
-
+"Default Customer Gender","Standardwert für Geschlecht"
+"If customer gender cannot be determined from account data, use this as default value.","Dieser Wert wird genutzt wenn keine Angaben in den Kundendaten gefunden werden konnten."
+"Male","männlich"
+"Female","weiblich"

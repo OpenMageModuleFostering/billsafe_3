@@ -32,6 +32,12 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
             ->will($this->returnValue($params));
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
 
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $result = Mage::getModel('billsafe/client')->prevalidateOrder($params);
         $this->assertTrue(is_array($result));
         $this->assertArrayHasKey("ack", $result);
@@ -72,15 +78,20 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
             ->will($this->returnValue($response));
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
 
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $orderHelperMock = $this->getHelperMock('billsafe/order', array('buildArticleList'));
         $orderHelperMock->expects($this->any())
            ->method('buildArticleList')
            ->will($this->returnValue(array()));
+        $this->replaceByMock('helper', 'billsafe/order', $orderHelperMock);
 
         $this->setExpectedException('Mage_Exception');
         Mage::getModel('billsafe/client')->updateArticleList($order, $context);
-
-
     }
 
     /**
@@ -106,17 +117,21 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $baseClientMock->expects($this->any())
             ->method('updateArticleList')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $orderHelperMock = $this->getHelperMock('billsafe/order', array('buildArticleList'));
         $orderHelperMock->expects($this->any())
            ->method('buildArticleList')
            ->will($this->returnValue(array('amount' => 10, 'tax_amount' => '11')));
         $this->replaceByMock('helper', 'billsafe/order', $orderHelperMock);
+
         $client = Mage::getModel('billsafe/client');
-
-
         $result = $client->updateArticleList($order, $context);
         Mage::unregister('current_creditmemo');
         $this->assertEquals($client, $result);
@@ -142,8 +157,18 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $baseClientMock->expects($this->any())
             ->method('updateArticleList')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $response = new stdClass();
+        $response->ack = 'ERR';
+        $response->errorList = new stdClass();
+        $response->errorList->code = 302;
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $orderHelperMock = $this->getHelperMock('billsafe/order', array('buildArticleList'));
         $orderHelperMock->expects($this->any())
@@ -159,6 +184,13 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
 
     public function testGetAgreedHandlingCharges()
     {
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
+
         $response = new stdClass();
         $response->agreedCharge = null;
         $baseClientMock = $this->getModelMock('billsafe/client_base', array('getAgreedHandlingCharges'));
@@ -170,6 +202,7 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $client = Mage::getModel('billsafe/client');
         $this->assertEquals(null, $client->getAgreedHandlingCharges());
 
+
         $response = new stdClass();
         $response->agreedCharge = 200;
         $baseClientMock = $this->getModelMock('billsafe/client_base', array('getAgreedHandlingCharges'));
@@ -180,6 +213,7 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
         $client = Mage::getModel('billsafe/client');
         $this->assertEquals(200, $client->getAgreedHandlingCharges());
+
 
         $response = new stdClass();
         $response->agreedCharge = new stdClass();
@@ -197,16 +231,24 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
 
     public function testGetPaymentInstruction()
     {
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
+
         $response = new stdClass();
         $response->ack = 'ERR';
         $response->errorList = new stdClass();
         $response->errorList->code = 302;
+
         $baseClientMock = $this->getModelMock('billsafe/client_base', array('getPaymentInstruction'));
         $baseClientMock->expects($this->any())
             ->method('getPaymentInstruction')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
         $client = Mage::getModel('billsafe/client');
         $order = new Varien_Object();
         $order->setIncrementId(1);
@@ -216,27 +258,30 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response = new stdClass();
         $response->ack = 'OK';
         $response->instruction = 'instruction';
+
         $baseClientMock = $this->getModelMock('billsafe/client_base', array('getPaymentInstruction'));
         $baseClientMock->expects($this->any())
             ->method('getPaymentInstruction')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
         $client = Mage::getModel('billsafe/client');
         $order = new Varien_Object();
         $order->setIncrementId(1);
         $this->assertEquals('instruction', $client->getPaymentInstruction($order));
 
+
         $response = new stdClass();
         $response->ack = 'ERR';
         $response->errorList = new stdClass();
         $response->errorList->code = 303;
+
         $baseClientMock = $this->getModelMock('billsafe/client_base', array('getPaymentInstruction'));
         $baseClientMock->expects($this->any())
             ->method('getPaymentInstruction')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
         $client = Mage::getModel('billsafe/client');
         $order = new Varien_Object();
         $order->setIncrementId(1);
@@ -250,6 +295,12 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
 
     public function testGetConfig()
     {
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $config = Mage::getModel('billsafe/client')->getConfig();
         $this->assertInstanceOf('Netresearch_Billsafe_Model_Config', $config);
     }
@@ -260,10 +311,16 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $configMock->expects($this->any())
             ->method('getMerchantId')
             ->will($this->returnValue('12345'));
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $model = Mage::getModel('billsafe/client');
         $this->assertInstanceOf('Netresearch_Billsafe_Model_Client', $model->setConfig($configMock));
         $this->assertEquals($configMock->getMerchantId(), $model->getConfig()->getMerchantId());
-
     }
 
     public function testGetOptions()
@@ -275,8 +332,13 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $baseClientMock->expects($this->any())
             ->method('getConnectionTimeout')
             ->will($this->returnValue(30));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $result = Mage::getModel('billsafe/client')->getOptions();
         $this->assertTrue(is_array($result));
@@ -290,13 +352,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response = new stdClass();
         $response->ack = 'OK';
         $response->status = 'ACCEPTED';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('getTransactionResult'));
 
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('getTransactionResult'));
         $baseClientMock->expects($this->any())
             ->method('getTransactionResult')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $client = Mage::getModel('billsafe/client');
         try {
             $this->assertTrue($client->isValid());
@@ -325,15 +393,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response = new stdClass();
         $response->ack = 'OK';
         $response->status = 'ACCEPTED';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('prepareOrder'));
-
         $order = Mage::getModel('sales/order')->load(13);
 
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('prepareOrder'));
         $baseClientMock->expects($this->any())
             ->method('prepareOrder')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $helperMock = $this->getHelperMock('billsafe/order', array('getPreparedOrderParams'));
         $helperMock->expects($this->any())
@@ -353,14 +425,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response = new stdClass();
         $response->ack = 'OK';
         $response->status = 'ACCEPTED';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('reportShipment'));
-
         $shipment = Mage::getModel('sales/order_shipment')->load(1);
+
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('reportShipment'));
         $baseClientMock->expects($this->any())
             ->method('reportShipment')
             ->will($this->returnValue($response));
-
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $helperMock = $this->getHelperMock('billsafe/order', array('buildArticleList'));
         $helperMock->expects($this->any())
@@ -370,7 +447,6 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
 
         $client = Mage::getModel('billsafe/client');
         $this->assertEquals($client, $client->reportShipment($shipment));
-
     }
 
     /**
@@ -382,20 +458,24 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response = new stdClass();
         $response->ack = 'NOK';
         $response->status = 'NOT ACCEPTED';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('reportShipment'));
 
-        $shipment = Mage::getModel('sales/order_shipment')->load(1);
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('reportShipment'));
         $baseClientMock->expects($this->any())
             ->method('reportShipment')
             ->will($this->returnValue($response));
+        $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
         $helperMock = $this->getHelperMock('billsafe/order', array('buildArticleList'));
         $helperMock->expects($this->any())
             ->method('buildArticleList')
             ->will($this->returnValue(array()));
         $this->replaceByMock('helper', 'billsafe/order', $helperMock);
-
-        $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
 
         $client = Mage::getModel('billsafe/client');
         try {
@@ -411,12 +491,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response->ack = 'OK';
         $response->status = 'ACCEPTED';
         $response->transactionId = '0815';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
 
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
         $baseClientMock->expects($this->any())
             ->method('processOrder')
             ->will($this->returnValue($response));
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $client = Mage::getModel('billsafe/client');
         $result = $client->processOrder(array());
         $this->assertTrue($result['success']);
@@ -430,12 +517,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response->status = 'DECLINED';
         $response->declineReason = new stdClass();
         $response->declineReason->buyerMessage = 'Du kommst hier net rein';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
 
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
         $baseClientMock->expects($this->any())
             ->method('processOrder')
             ->will($this->returnValue($response));
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $client = Mage::getModel('billsafe/client');
         $result = $client->processOrder(array());
         $this->assertFalse($result['success']);
@@ -448,12 +542,19 @@ class Netresearch_Billsafe_Test_Model_ClientTest extends EcomDev_PHPUnit_Test_Ca
         $response->ack = 'NOK';
         $response->errorList = new stdClass();
         $response->errorList->message = 'Request failed';
-        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
 
+        $baseClientMock = $this->getModelMock('billsafe/client_base', array('processOrder'));
         $baseClientMock->expects($this->any())
             ->method('processOrder')
             ->will($this->returnValue($response));
         $this->replaceByMock('model', 'billsafe/client_base', $baseClientMock);
+
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+           ->method('getStoreIdfromQuote')
+           ->will($this->returnValue(Mage::app()->getStore()->getId()));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+
         $client = Mage::getModel('billsafe/client');
         $result = $client->processOrder(array());
         $this->assertFalse($result['success']);

@@ -3,6 +3,10 @@
 class Netresearch_Billsafe_Test_Model_ConfigTest
     extends EcomDev_PHPUnit_Test_Case
 {
+    /**
+     * @var Netresearch_Billsafe_Model_Config
+     */
+    protected $config;
 
     public function setUp()
     {
@@ -478,8 +482,7 @@ class Netresearch_Billsafe_Test_Model_ConfigTest
 
     public function testGetMerchantPublicKey()
     {
-        $path
-            = Netresearch_Billsafe_Model_Config::CONFIG_PATH_BILLSAFE_PUBLIC_KEY;
+        $path = Netresearch_Billsafe_Model_Config::CONFIG_PATH_BILLSAFE_PUBLIC_KEY;
         $storeFirst = Mage::app()->getStore(0)->load(0);
 
         $storeFirst->setConfig($path, 'default public key');
@@ -496,6 +499,16 @@ class Netresearch_Billsafe_Test_Model_ConfigTest
         $this->assertEquals('default public key store 1', $this->config->getPublicKey(1));
         $storeSecond->resetConfig();
         */
+    }
+
+    public function testGetDefaultCustomerGender()
+    {
+        $defaultGender = 'Female';
+        $path = Netresearch_Billsafe_Model_Config::CONFIG_PATH_BILLSAFE_CUSTOMER_GENDER;
+
+        $code = Mage_Core_Model_Store::DEFAULT_CODE;
+        Mage::app()->getStore($code)->setConfig($path, $defaultGender);
+        $this->assertEquals($this->config->getDefaultCustomerGender($code), $defaultGender);
     }
 
     public function testGetMaxFee()

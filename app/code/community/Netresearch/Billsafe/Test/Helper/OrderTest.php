@@ -1029,6 +1029,9 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
      */
     public function testGetPreparedOrderParams()
     {
+        $order = Mage::getModel('sales/order')->load(13);
+        $billingAddress = $this->getBillingAddress();
+        $order->setBillingAddress($billingAddress);
         $sessionMock = $this->getModelMockBuilder('checkout/session')
             ->disableOriginalConstructor(
             ) // This one removes session_start and other methods usage
@@ -1041,7 +1044,10 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
             ->getMock();
         $this->replaceByMock('singleton', 'core/session', $sessionMock);
 
-        $fakeQuote = new Varien_Object();
+        $fakeQuote = Mage::getModel('sales/quote');
+        $billingAddressQuote = $this->getBillingAddress(false);
+        $billingAddressQuote->setEmail('a@b.com');
+        $fakeQuote->setBillingAddress($billingAddressQuote);
         $cartMock = $this->getModelMock('checkout/cart', array('getQuote'));
         $cartMock->expects($this->any())
             ->method('getQuote')
@@ -1076,13 +1082,9 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
             ->method('buildArticleList')
             ->will($this->returnValue(array('name' => 'item 1')));
 
-        $order = Mage::getModel('sales/order')->load(13);
-        $customer = new Varien_Object();
-        $customer->setEmail('a@b.com');
+        $customer = Mage::getModel('customer/customer');
         $order->setCustomer($customer);
 
-        $billingAddress = $this->getBillingAddress();
-        $order->setBillingAddress($billingAddress);
         $result = $orderHelperMock->getPreparedOrderParams($order);
 
         $this->resultAssertions($result, $order, $dataHelperMock,
@@ -1131,16 +1133,18 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
             implode(' ', $billingAddress->getStreet()),
             $result['customer']['street']
         );
-        $this->assertEquals('', $result['customer']['houseNumber']);
         $this->assertEquals(
             $billingAddress->getPostcode(), $result['customer']['postcode']
         );
+
         $this->assertEquals(
             $billingAddress->getCity(), $result['customer']['city']
         );
-        $this->assertEquals('DE', $result['customer']['country']);
+        $this->assertEquals($billingAddress->getCountry(), $result['customer']['country']);
         $this->assertEquals('a@b.com', $result['customer']['email']);
-        $this->assertEquals('1981-01-01', $result['customer']['dateOfBirth']);
+        if (0 === strlen(trim($billingAddress->getCompany()))) {
+            $this->assertEquals('1981-01-01', $result['customer']['dateOfBirth']);
+        }
         $this->assertEquals(
             $billingAddress->getTelephone(), $result['customer']['phone']
         );
@@ -1164,9 +1168,13 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
         $this->assertEquals('bar', $result['url']['cancel']);
     }
 
-    protected function getBillingAddress()
+    protected function getBillingAddress($useForOrder = true)
     {
-        $billingAddress = Mage::getModel('sales/order_address');
+        if ($useForOrder) {
+            $billingAddress = Mage::getModel('sales/order_address');
+        } else {
+            $billingAddress = Mage::getModel('sales/quote_address');
+        }
         $billingAddress->setStreet('Nonnenstr. 11');
         $billingAddress->setCompany('NR');
         $billingAddress->setFirstname('Net');

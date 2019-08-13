@@ -20,7 +20,7 @@ class Netresearch_Billsafe_Model_Config_Maxfee
         $storeId = Mage::app()->getStore()->getId();
         $config = $this->getTempConfig();
         if ($config->isPaymentFeeEnabled($storeId)) {
-            $max = Mage::getModel('billsafe/config')->getMaxFee();
+            $max = $this->getMaxFee();
             if ($max < $this->getValue()) {
                 $this->setValue($max);
             }
@@ -43,20 +43,21 @@ class Netresearch_Billsafe_Model_Config_Maxfee
             && strlen($config->getMerchantId($storeId))
             && strlen($config->getMerchantLicense($storeId))
         ) {
+            $dataHelper = $this->getDataHelper();
             if ($this->getValue() == '') {
                 $msg = 'Maximum/Default fee is required entry!';
-                throw new Exception(Mage::helper('billsafe')->__($msg));
+                throw new Exception($dataHelper->__($msg));
             }
-            $max = Mage::getModel('billsafe/config')->getMaxFee();
+            $max = $this->getMaxFee();
             if (is_null($max)) {
-                throw new Exception(Mage::helper('billsafe')->__(
+                throw new Exception($dataHelper->__(
                     'No connection to BillSAFE. Please check your credentials.'
                 ));
             }
             if ($max < $this->getValue()) {
                 $msg
                     = 'Maximum/Default fee %s exceeded the allowed maximum by BillSAFE of %s.';
-                throw new Exception(Mage::helper('billsafe')->__(
+                throw new Exception($dataHelper->__(
                     $msg, $this->getValue(), $max
                 ));
             }
@@ -64,5 +65,22 @@ class Netresearch_Billsafe_Model_Config_Maxfee
         $this->restoreConfig();
 
         parent::_beforeSave();
+    }
+
+    /**
+     * gets the payment fee from BillSAFE
+     *
+     * @return float the amount for the payment fee, null if it couldn't be obtained
+     */
+    protected function getMaxFee()
+    {
+        $max = null;
+        try {
+            $max = Mage::getModel('billsafe/config')->getMaxFee();
+        } catch (Exception $e) {
+            $this->getDataHelper()->log('error obtaining the max fee ' . $e->getMessage());
+            Mage::logException($e);
+        }
+        return $max;
     }
 }

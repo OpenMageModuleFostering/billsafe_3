@@ -13,6 +13,9 @@ class Netresearch_Billsafe_Test_Controller_PaymentControllerTest
 
     public function testVerifyActionRedirectsToCart()
     {
+        $customerSessionMock = $this->getModelMock('checkout/session', array('init', 'save', 'addError', 'isLoggedIn'));
+        $this->replaceByMock('model', 'checkout/session', $customerSessionMock);
+
         $clientMock = $this->getModelMock('billsafe/client', array('isValid', 'isAccepted', 'getResponse', 'getTransactionResult'));
         $clientMock->expects($this->any())
             ->method('isValid')

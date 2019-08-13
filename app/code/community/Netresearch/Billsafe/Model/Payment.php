@@ -53,6 +53,28 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     }
 
     /**
+     * @param null $dataHelper
+     */
+    public function setDataHelper(Netresearch_Billsafe_Helper_Data $dataHelper)
+    {
+        $this->dataHelper = $dataHelper;
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Data
+     */
+    public function getDataHelper()
+    {
+        if (null == $this->dataHelper) {
+            $this->dataHelper = Mage::helper('billsafe/data');
+        }
+        return $this->dataHelper;
+    }
+
+
+
+
+    /**
      * Check if payment method is available for current order
      *
      * @param NULL|Mage_Sales_Model_Quote $quote
@@ -61,14 +83,11 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      */
     public function isAvailable($quote = null)
     {
-        if (Mage::getModel('billsafe/config')->isBillsafeDirectEnabled() && true === Mage::getSingleton('customer/session')->getData(
-                'authorize_failed'
-            ) && $quote instanceof Mage_Sales_Model_Quote && Mage::helper('billsafe/order')->generateAddressHash(
-                $quote->getBillingAddress()
-            ) ==
-            Mage::getSingleton('customer/session')->getData(
-                'billsafe_billingAddrHash'
-            )
+        if (Mage::getModel('billsafe/config')->isBillsafeDirectEnabled()
+            && true === Mage::getSingleton('customer/session')->getData('authorize_failed')
+            && $quote instanceof Mage_Sales_Model_Quote
+            && Mage::helper('billsafe/order')->generateAddressHash($quote->getBillingAddress())
+                == Mage::getSingleton('customer/session')->getData('billsafe_billingAddrHash')
         ) {
             return false;
         }
@@ -85,26 +104,16 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if ($quote) {
             // total amount must fit between min and max amount
             $total = (float) $quote->getGrandTotal();
-            $minAmount = $this->getConfig()->getBillSafeMinAmount(
-                $quote->getStoreId()
-            );
-            $maxAmount = $this->getConfig()->getBillSafeMaxAmount(
-                $quote->getStoreId()
-            );
+            $minAmount = $this->getConfig()->getBillSafeMinAmount($quote->getStoreId());
+            $maxAmount = $this->getConfig()->getBillSafeMaxAmount($quote->getStoreId());
             if ($total < $minAmount || $total > $maxAmount) {
                 return false;
             }
             // Check Min and Fax of Fee
-            if (Mage::getModel('billsafe/config')->isPaymentFeeEnabled(
-                    $quote->getStoreId()
-                )
-            ) {
-                $feeProduct = Mage::helper('paymentfee/data')
-                    ->getUpdatedFeeProduct();
-                $avoidOverMax = $this->getConfig()
-                    ->isBillsafeExeedingMaxFeeAmount($quote->getStoreId());
-                $avoidBelowMin = $this->getConfig()
-                    ->isBillsafeExeedingMinFeeAmount($quote->getStoreId());
+            if (Mage::getModel('billsafe/config')->isPaymentFeeEnabled($quote->getStoreId())) {
+                $feeProduct = Mage::helper('paymentfee/data')->getUpdatedFeeProduct();
+                $avoidOverMax = $this->getConfig()->isBillsafeExeedingMaxFeeAmount($quote->getStoreId());
+                $avoidBelowMin = $this->getConfig()->isBillsafeExeedingMinFeeAmount($quote->getStoreId());
 
                 if ($avoidOverMax && $feeProduct->getExceedsMaxAmount()) {
                     return false;
@@ -125,16 +134,21 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             $shippingAddress = $quote->getShippingAddress();
             if (false == $shippingAddress->getSameAsBilling()) {
                 $shippingData = $this->serializeAddress($shippingAddress);
-                $billingData = $this->serializeAddress(
-                    $quote->getBillingAddress()
-                );
+                $billingData = $this->serializeAddress($quote->getBillingAddress());
 
                 if (0 != strcmp($shippingData, $billingData)) {
                     return false;
                 }
             }
-
-            $this->prevalidateOrder($quote);
+            /*
+             * in cases the quote couldn't be handled by BillSAFE isAvailable return true in order to display a
+             * detailed message to the customer, technical errors leads to unavailbilty of BillSAFE payment method
+             */
+            try {
+                $this->prevalidateOrder($quote);
+            } catch (Mage_Core_Exception $e) {
+                return false;
+            }
         }
 
         return true;
@@ -167,26 +181,39 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         return $result;
     }
 
-    public function prevalidateOrder($quote)
+    /**
+     * executes prevalidateOrder call and evaluates the result
+     *
+     * @param Mage_Sales_Model_Quote $quote - the quote which needs to be checked for BillSAFe payment
+     *
+     * @return bool - true if the quote is valid for billSAFE payment, false otherwise
+     */
+    public function prevalidateOrder(Mage_Sales_Model_Quote $quote)
     {
-        if ($quote->getBillingAddress()
-            instanceof Mage_Sales_Model_Quote_Address && 0 < strlen($quote->getBillingAddress()->getPostcode())
-        ) {
-            $prevalidateResult = Mage::helper('billsafe/order')
-                ->prevalidateOrder($quote);
-            if (strtolower(trim($prevalidateResult->ack)) != 'ok' || (property_exists($prevalidateResult, 'invoice') && (bool) $prevalidateResult->invoice->isAvailable == false)
-            ) {
-                if (property_exists($prevalidateResult, 'invoice')) {
-                    $this->_unavailableMessage
-                        = $prevalidateResult->invoice->message;
+        try {
+            if ($quote->getBillingAddress() instanceof Mage_Sales_Model_Quote_Address
+                && 0 < strlen($quote->getBillingAddress()->getPostcode())) {
+                $prevalidateResult = Mage::helper('billsafe/order')->prevalidateOrder($quote);
+                if (strtolower(trim($prevalidateResult->ack)) != 'ok' ||
+                    (property_exists($prevalidateResult, 'invoice') &&
+                        (bool) $prevalidateResult->invoice->isAvailable == false)
+                ) {
+                    if (property_exists($prevalidateResult, 'invoice')) {
+                        $this->_unavailableMessage
+                            = $prevalidateResult->invoice->message;
+                    }
+                    $this->_availableCheck = false;
+                    return false;
                 }
-                $this->_availableCheck = false;
-                return false;
             }
+            $this->_availableCheck = true;
+            $this->_unavailableMessage = '';
+            return true;
+        } catch (Exception $e) {
+            $this->getDataHelper()->log('Exception during prevalidateOrder call ' . $e->getMessage());
+            $this->_availableCheck = false;
+            Mage::throwException($e);
         }
-        $this->_availableCheck = true;
-        $this->_unavailableMessage = '';
-        return true;
     }
 
     /**
@@ -265,37 +292,30 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     {
 
         parent::authorize($payment, $amount);
+        $order = $this->getInfoInstance()->getOrder();
+        $section = $this->getCheckoutSection($order);
+        $buyerMessage = "Please select another payment method!";
         if (true == Mage::getModel('billsafe/config')->isBillSafeDirectEnabled()
         ) {
-
-            $order = $this->getInfoInstance()->getOrder();
             $quote = $order->getQuote();
             $result = array();
-            $section = 'shipping_method';
-            if (false === ($order->getShippingAddress() instanceof
-                Mage_Sales_Model_Order_Address) || 0 == strlen($order->getShippingAddress()->getPostcode())
-            ) {
-                $section = 'billing';
-            }
-            $buyerMessage = "Please select another payment method!";
+
+
             try {
-                $result = Mage::helper('billsafe/order')->processOrder(
-                    $quote, $order
-                );
-                Mage::helper('billsafe/data')->log(
-                    'result ' . Zend_Json::encode($result)
-                );
-                if (!array_key_exists('success', $result) || $result['success'] === false
-                ) {
+                $result = Mage::helper('billsafe/order')->processOrder($quote, $order);
+                Mage::helper('billsafe/data')->log('result ' . Zend_Json::encode($result));
+                if (!array_key_exists('success', $result) || $result['success'] === false) {
                     if (array_key_exists('buyerMessage', $result)) {
                         $buyerMessage = $result['buyerMessage'];
                         Mage::getSingleton('customer/session')->setData(
-                            'authorize_failed', true
+                            'authorize_failed',
+                            true
                         );
                         $addressHash = Mage::helper('billsafe/order')
                             ->generateAddressHash($quote->getBillingAddress());
                         Mage::getSingleton('customer/session')->setData(
-                            'billsafe_billingAddrHash', $addressHash
+                            'billsafe_billingAddrHash',
+                            $addressHash
                         );
                     }
                     Mage::getSingleton('checkout/type_onepage')->getCheckout()
@@ -309,7 +329,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                         ->setIsTransactionPending(false)
                         ->setIsTransactionClosed(false)
                         ->setPreparedMessage(
-                            $this->getHelper()->__(
+                            $this->getDataHelper()->__(
                                 'Payment registered at Billsafe'
                             )
                         )
@@ -321,12 +341,9 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                         $state = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
                     }
 
-                    $text
-                        = 'Successful BillSAFE payment.<br/>Transaction ID: ' .
+                    $text = 'Successful BillSAFE payment.<br/>Transaction ID: ' .
                         '%d.<br/>BillSAFE Transaction Status: ACCEPTED.';
-                    $notice = Mage::helper('billsafe')->__(
-                        $text, $result['transactionId']
-                    );
+                    $notice = $this->getDataHelper()->__($text, $result['transactionId']);
                     Mage::helper('billsafe/order')->getPaymentInstruction($order);
                     $order->setState($state, true, $notice)->save();
                 }
@@ -338,42 +355,44 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                         $this->cancel($payment);
                     }
                 } catch (Exception $e) {
-                    $this->getHelper()->log($e->getMessage());
+                    $this->getDataHelper()->log($e->getMessage());
                 }
                 Mage::getSingleton('checkout/type_onepage')->getCheckout()
                     ->setGotoSection($section);
                 Mage::throwException(
                     sprintf(
-                        '%s', Mage::helper('billsafe/data')->__($buyerMessage)
+                        '%s',
+                        Mage::helper('billsafe/data')->__($buyerMessage)
                     )
                 );
             }
         } else {
-
-            $token = $this->getClient()
-                ->prepareOrder($this->getInfoInstance()->getOrder())
-                ->getResponseToken();
-
+            $token = null;
+            try {
+                $token = $this->getClient()
+                    ->prepareOrder($this->getInfoInstance()->getOrder())
+                    ->getResponseToken();
+            } catch (Exception $e) {
+                $this->getDataHelper()->log('error getting the token ' . $e->getMessage());
+            }
             if (!$token) {
-                throw new Mage_Checkout_Exception('No Billsafe token');
+                Mage::getSingleton('checkout/type_onepage')->getCheckout()->setGotoSection($section);
+                Mage::throwException($this->getDataHelper()->__($buyerMessage));
             }
             Mage::register(
-                Netresearch_Billsafe_Model_Config::TOKEN_REGISTRY_KEY, $token
+                Netresearch_Billsafe_Model_Config::TOKEN_REGISTRY_KEY,
+                $token
             );
             $payment
                 ->setIsTransactionPending(true)
                 ->setIsTransactionClosed(false)
                 ->setPreparedMessage(
-                    $this->getHelper()->__('Payment registered at Billsafe')
+                    $this->getDataHelper()->__('Payment registered at Billsafe')
                 )
                 ->setTransactionId($token);
         }
     }
 
-    public function getHelper()
-    {
-        return Mage::helper('billsafe/data');
-    }
 
     /**
      * Capture
@@ -386,7 +405,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     public function capture(Varien_Object $payment, $amount)
     {
         if (!$this->areAllCaptureItemsSent($payment)) {
-            throw new Mage_Core_Exception($this->getHelper()->__(
+            throw new Mage_Core_Exception($this->getDataHelper()->__(
                 'Count of items to invoice does not match sent items count. ' .
                 'Please change to items to be invoiced to match shipped items!'
             ));
@@ -407,7 +426,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      */
     protected function areAllCaptureItemsSent($payment)
     {
-        if ($this->getHelper()->isDoShipment() || $this->getHelper()->isCaptureOffline()
+        if ($this->getDataHelper()->isDoShipment() || $this->getDataHelper()->isCaptureOffline()
         ) {
             return true;
         }
@@ -510,5 +529,22 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     public function getUnavailableMessage()
     {
         return $this->_unavailableMessage;
+    }
+
+    /**
+     * gets the checkout section in case of errors
+     *
+     * @param $order
+     *
+     * @return string
+     */
+    protected function getCheckoutSection($order)
+    {
+        $section = 'shipping_method';
+        if (false === ($order->getShippingAddress() instanceof  Mage_Sales_Model_Order_Address)
+            || 0 === strlen(trim($order->getShippingAddress()->getPostcode()))) {
+            $section = 'billing';
+        }
+        return $section;
     }
 }

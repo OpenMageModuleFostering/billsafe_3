@@ -1339,7 +1339,7 @@ endobj
 % 'R77': class PDFInfo 
 77 0 obj
 << /Author ()
- /CreationDate (D:20131213165214-01'00')
+ /CreationDate (D:20140327143410-01'00')
  /Keywords ()
  /Producer (ReportLab http://www.reportlab.com)
  /Subject (\(unspecified\))
@@ -2307,138 +2307,154 @@ endobj
 % 'R97': class PDFStream 
 97 0 obj
 % page stream
-<< /Length 6710 >>
+<< /Length 7258 >>
 stream
 1 0 0 1 0 0 cm BT /F1 12 Tf 14.4 TL ET
 q
-1 0 0 1 62.69291 240.3307 cm
+1 0 0 1 62.69291 186.3307 cm
 1 1 1 rg
+n 0 522 469.8898 -54 re f*
+.878431 .878431 .878431 rg
 n 0 468 469.8898 -54 re f*
-.878431 .878431 .878431 rg
+1 1 1 rg
 n 0 414 469.8898 -54 re f*
-1 1 1 rg
-n 0 360 469.8898 -54 re f*
 .878431 .878431 .878431 rg
-n 0 306 469.8898 -78 re f*
+n 0 360 469.8898 -78 re f*
 1 1 1 rg
-n 0 228 469.8898 -42 re f*
+n 0 282 469.8898 -42 re f*
 .878431 .878431 .878431 rg
-n 0 186 469.8898 -42 re f*
+n 0 240 469.8898 -42 re f*
 1 1 1 rg
-n 0 144 469.8898 -102 re f*
+n 0 198 469.8898 -102 re f*
 .878431 .878431 .878431 rg
-n 0 42 469.8898 -42 re f*
+n 0 96 469.8898 -42 re f*
+1 1 1 rg
+n 0 54 469.8898 -54 re f*
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
-1 0 0 1 6 441 cm
+1 0 0 1 6 495 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 16.82 Tm /F1 10 Tf 12 TL (Produkt-SKU) Tj T* (Zahlungsartenaufschlag) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 417 cm
+1 0 0 1 162.6299 471 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 40.82 Tm /F1 10 Tf 12 TL (Falls Sie einen Aufschlag auf BillSAFE-Zahlungen vom Kunden) Tj T* (verlangen m\366chten, geben Sie hier die SKU des Produktes an,) Tj T* (welches f\374r den Zahlungsartenaufschlag verwendet werden soll. Im) Tj T* (Folgenden wird dies genauer beschrieben.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 363 cm
+1 0 0 1 6 417 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 40.82 Tm /F1 10 Tf 12 TL (Zahlungsart deaktivieren, wenn) Tj T* (der maximale) Tj T* (Zahlartenaufschlag \374berstiegen) Tj T* (wird) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 375 cm
+1 0 0 1 162.6299 429 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 28.82 Tm /F1 10 Tf 12 TL (Wenn diese Option aktiviert ist, steht BillSAFE nicht zur Auswahl,) Tj T* (falls der Warenkorbwert \(inkl. Versand, ohne Zahlartenaufschlag\),) Tj T* (die festgelegte Obergrenze \374bersteigt.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 309 cm
+1 0 0 1 6 363 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 40.82 Tm /F1 10 Tf 12 TL (Zahlungsart deaktivieren, wenn) Tj T* (der minimale) Tj T* (Zahlartenaufschlag) Tj T* (unterschritten wird) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 321 cm
+1 0 0 1 162.6299 375 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 28.82 Tm /F1 10 Tf 12 TL (Wenn diese Option aktiviert ist, steht BillSAFE nicht zur Auswahl,) Tj T* (falls der Warenkorbwert \(inkl. Versand, ohne Zahlartenaufschlag\),) Tj T* (die festgelegte Untergrenze unterschreitet.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 291 cm
+1 0 0 1 6 345 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Maximal-/Standard-Aufschlag) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 231 cm
+1 0 0 1 162.6299 285 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 64.82 Tm /F1 10 Tf 12 TL (Maximal- und zugleich Standardwert f\374r den Zahlartenaufschlag.) Tj T* (Dieser Wert sollte den in der BillSAFE-Konfiguration eingestellten) Tj T* (Wert nicht \374berschreiten, andernfalls erh\344lt man eine) Tj T* (Fehlermeldung. Wird der Wert in der BillSAFE-Konfiguration) Tj T* (ge\344ndert, so muss die Konfiguration der Zahlungsart im Magento) Tj T* (neu gespeichert werden, damit der Abgleich der Werte erfolgt.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 213 cm
+1 0 0 1 6 267 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Minimaler Zahlartenaufschlag) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 189 cm
+1 0 0 1 162.6299 243 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 28.82 Tm /F1 10 Tf 12 TL (Minimaler Wert f\374r den Zahlartenaufschlag. Muss nur eingestellt) Tj T* (werden, wenn ein prozentualer Zahlartenaufschlag angegeben) Tj T* (wurde.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 171 cm
+1 0 0 1 6 225 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Prozentualer Zahlartenaufschlag) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 147 cm
+1 0 0 1 162.6299 201 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 28.82 Tm /F1 10 Tf 12 TL (Prozent vom Warenwert zzgl. Versand. Wird dieses Feld leer) Tj T* (gelassen, so gilt der Maximal-/Standard-Aufschlag f\374r jede Zahlung) Tj T* (mit BillSAFE.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 129 cm
+1 0 0 1 6 183 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Fehlerprotokollierung aktivieren) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 45 cm
+1 0 0 1 162.6299 99 cm
 q
 BT 1 0 0 1 0 88.82 Tm 12 TL /F1 10 Tf 0 0 0 rg (Wenn dieser Wert auf "Ja" gesetzt ist, werden alle API-Aufrufe an) Tj T* (BillSAFE in eine separate ) Tj /F3 10 Tf (billsafe.log) Tj /F1 10 Tf (-Datei geschrieben. Die) Tj T* (Log-Eintr\344ge enthalten alle Parameter des Requests und die) Tj T* (entsprechenden BillSAFE-Antwort \(Response\). Die entsprechende) Tj T* (Datei findet sich im Normalfall im ) Tj /F3 10 Tf (/var/log) Tj /F1 10 Tf (-Verzeichnis der) Tj T* (Magento-Installation. Diese Einstellung sollte genau wie der) Tj T* (Testmodus nur zu Test- und Debug-Zwecken, sowie w\344hrend der) Tj T* (Entwicklung, aktiviert werden.) Tj T* ET
 Q
 Q
 q
-1 0 0 1 6 27 cm
+1 0 0 1 6 81 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Reihenfolge) Tj T* ET
 Q
 Q
 q
-1 0 0 1 162.6299 3 cm
+1 0 0 1 162.6299 57 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 28.82 Tm /F1 10 Tf 12 TL (Die Stelle in der Liste m\366glicher Zahlungsmethoden im Checkout) Tj T* (auf dem diese Zahlart auf der Auswahlseite erscheint. Je kleiner die) Tj T* (Zahl, desto weiter oben erscheint diese.) Tj T* ET
+Q
+Q
+q
+1 0 0 1 6 39 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Geschlecht) Tj T* ET
+Q
+Q
+q
+1 0 0 1 162.6299 3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 40.82 Tm /F1 10 Tf 12 TL (Es ist erforderlich, das Geschlecht des Kunden an BillSAFE zu) Tj T* (\374bertragen. Ist diese Information weder an der Bestellung noch an) Tj T* (der Kundenadresse oder im Kundenaccount verf\374gbar, wird der hier) Tj T* (konfigurierte Standardwert f\374r die \334bertragung herangezogen.) Tj T* ET
 Q
 Q
 q
@@ -2446,35 +2462,36 @@ q
 1 j
 0 0 0 RG
 .25 w
+n 0 522 m 469.8898 522 l S
 n 0 468 m 469.8898 468 l S
 n 0 414 m 469.8898 414 l S
 n 0 360 m 469.8898 360 l S
-n 0 306 m 469.8898 306 l S
-n 0 228 m 469.8898 228 l S
-n 0 186 m 469.8898 186 l S
-n 0 144 m 469.8898 144 l S
-n 0 42 m 469.8898 42 l S
-n 156.6299 0 m 156.6299 468 l S
-n 0 0 m 0 468 l S
-n 469.8898 0 m 469.8898 468 l S
+n 0 282 m 469.8898 282 l S
+n 0 240 m 469.8898 240 l S
+n 0 198 m 469.8898 198 l S
+n 0 96 m 469.8898 96 l S
+n 0 54 m 469.8898 54 l S
+n 156.6299 0 m 156.6299 522 l S
+n 0 0 m 0 522 l S
+n 469.8898 0 m 469.8898 522 l S
 n 0 0 m 469.8898 0 l S
 Q
 Q
 q
-1 0 0 1 62.69291 240.3307 cm
+1 0 0 1 62.69291 186.3307 cm
 Q
 q
-1 0 0 1 62.69291 210.3307 cm
+1 0 0 1 62.69291 156.3307 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 16.82 Tm /F1 10 Tf 12 TL .945814 Tw (Bei der Verwendung von Market Ready Germany sind die folgenden Einstellungen vorzunehmen, damit) Tj T* 0 Tw (die BillSAFE Rechnungsinformationen auf dem Ausdruck erscheinen:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 62.69291 204.3307 cm
+1 0 0 1 62.69291 150.3307 cm
 Q
 q
-1 0 0 1 62.69291 168.3307 cm
+1 0 0 1 62.69291 114.3307 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 BT 1 0 0 1 0 2 Tm  T* ET
@@ -2534,10 +2551,10 @@ q
 Q
 Q
 q
-1 0 0 1 62.69291 168.3307 cm
+1 0 0 1 62.69291 114.3307 cm
 Q
 q
-1 0 0 1 62.69291 168.3307 cm
+1 0 0 1 62.69291 114.3307 cm
 Q
 q
 1 0 0 1 426.3422 728.5039 cm
@@ -3621,37 +3638,37 @@ xref
 0000623262 00000 n
 0000624718 00000 n
 0000632549 00000 n
-0000639360 00000 n
-0000643073 00000 n
-0000645916 00000 n
-0000648308 00000 n
-0000649630 00000 n
-0000654425 00000 n
-0000657430 00000 n
-0000661699 00000 n
-0000662764 00000 n
-0000663046 00000 n
-0000663125 00000 n
-0000663204 00000 n
-0000663283 00000 n
-0000663362 00000 n
-0000663441 00000 n
-0000663520 00000 n
-0000663599 00000 n
-0000663678 00000 n
-0000663757 00000 n
-0000663837 00000 n
-0000663917 00000 n
-0000663997 00000 n
-0000664077 00000 n
+0000639908 00000 n
+0000643621 00000 n
+0000646464 00000 n
+0000648856 00000 n
+0000650178 00000 n
+0000654973 00000 n
+0000657978 00000 n
+0000662247 00000 n
+0000663312 00000 n
+0000663594 00000 n
+0000663673 00000 n
+0000663752 00000 n
+0000663831 00000 n
+0000663910 00000 n
+0000663989 00000 n
+0000664068 00000 n
+0000664147 00000 n
+0000664226 00000 n
+0000664305 00000 n
+0000664385 00000 n
+0000664465 00000 n
+0000664545 00000 n
+0000664625 00000 n
 trailer
 << /ID 
  % ReportLab generated PDF document -- digest (http://www.reportlab.com) 
- [(N\030\313\271\272\371\370{\024!'0\204\003\240_) (N\030\313\271\272\371\370{\024!'0\204\003\240_)] 
+ [(\003!\011u\311k\030\212\272\314\212C|\014\2265) (\003!\011u\311k\030\212\272\314\212C|\014\2265)] 
 
  /Info 77 0 R
  /Root 76 0 R
  /Size 121 >>
 startxref
-664126
+664674
 %%EOF

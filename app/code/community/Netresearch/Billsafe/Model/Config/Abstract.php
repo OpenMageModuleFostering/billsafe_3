@@ -7,6 +7,29 @@
  */
 class Netresearch_Billsafe_Model_Config_Abstract extends Mage_Core_Model_Config_Data
 {
+    protected $dataHelper = null;
+
+    /**
+     * @param null $dataHelper
+     */
+    public function setDataHelper($dataHelper)
+    {
+        $this->dataHelper = $dataHelper;
+    }
+
+    /**
+     * @return null
+     */
+    public function getDataHelper()
+    {
+        if (null === $this->dataHelper) {
+            $this->dataHelper = Mage::helper('billsafe/data');
+        }
+        return $this->dataHelper;
+    }
+
+
+
     protected $_realConfigData = array();
 
     /**

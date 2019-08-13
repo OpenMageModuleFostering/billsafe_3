@@ -16,7 +16,12 @@ class Netresearch_Billsafe_Model_Client_Base extends Zend_Soap_Client
         $helper = Mage::helper('billsafe');
 
         try {
-            $response = parent::__call($name, $arguments);
+            // Check if WSDL is available before SoapClient raises an uncatchable PHP fatal error.
+            if (get_headers($this->getWsdl())) {
+                $response = parent::__call($name, $arguments);
+            } else {
+                Mage::throwException("WSDL is currently not available.");
+            }
         } catch (Exception $e) {
             $helper->log($e->getMessage());
             $msg = $helper->__(

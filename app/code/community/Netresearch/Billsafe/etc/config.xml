@@ -2,7 +2,7 @@
 <config>
     <modules>
         <Netresearch_Billsafe>
-            <version>13.12.13</version>
+            <version>14.03.27</version>
         </Netresearch_Billsafe>
     </modules>
 
@@ -27,6 +27,7 @@
                 <timeout>5</timeout>
                 <allowspecific>1</allowspecific>
                 <specificcountry>DE</specificcountry>
+                <default_gender>Male</default_gender>
             </billsafe>
         </payment>
         <payment_services>
@@ -43,11 +44,18 @@
             <billsafe>
                 <class>Netresearch_Billsafe_Model</class>
             </billsafe>
+            <!-- Symmetrics_InvoicePdf -->
             <invoicepdf>
                 <rewrite>
                     <pdf_items_invoice_info>Netresearch_Billsafe_Model_Pdf_Items_Invoice_Info</pdf_items_invoice_info>
                 </rewrite>
             </invoicepdf>
+            <!-- FireGento_Pdf -->
+            <firegento_pdf>
+                <rewrite>
+                    <engine_invoice_default>Netresearch_Billsafe_Model_Pdf_Engine_Invoice_Default</engine_invoice_default>
+                </rewrite>
+            </firegento_pdf>
         </models>
         <helpers>
             <billsafe>
@@ -94,6 +102,15 @@
                     </billsafe_observer>
                 </observers>
             </sales_order_invoice_load_after>
+            <firegento_pdf_invoice_insert_note>
+                <observers>
+                    <billsafe_observer>
+                        <type>singleton</type>
+                        <class>billsafe/observer</class>
+                        <method>firegentoPdfInvoiceInsertNotice</method>
+                    </billsafe_observer>
+                </observers>
+            </firegento_pdf_invoice_insert_note>
         </events>
     </global>
     <adminhtml>

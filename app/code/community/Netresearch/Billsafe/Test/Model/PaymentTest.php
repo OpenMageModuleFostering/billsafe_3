@@ -58,6 +58,32 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
     /**
      * @loadFixture ../../../var/fixtures/orders.yaml
+     * @expectedException Mage_Core_Exception
+     */
+    public function testPrevalidateOrderWithException()
+    {
+        $quote = Mage::getModel('sales/quote')->load(1);
+        $fakeCheckoutSession = $this->getModelMock('checkout/session', array('init', 'save'));
+        $this->replaceByMock('model', 'checkout/session', $fakeCheckoutSession);
+        $fakeCustomerSession = $this->getModelMock('customer/session', array('init', 'save'));
+        $this->replaceByMock('model', 'customer/session', $fakeCustomerSession);
+        $fakeResponse = new stdClass();
+        $fakeResponse->ack = 'OK';
+        $invoice = new stdClass();
+        $invoice->isAvailable = true;
+        $fakeResponse->invoice = $invoice;
+
+        $helperMock = $this->getHelperMock('billsafe/order', array('prevalidateOrder'));
+        $helperMock->expects($this->any())
+            ->method('prevalidateOrder')
+            ->will($this->throwException(new Exception()));
+        $this->replaceByMock('helper', 'billsafe/order', $helperMock);
+        $model = Mage::getModel('billsafe/payment');
+        $model->prevalidateOrder($quote);
+    }
+
+    /**
+     * @loadFixture ../../../var/fixtures/orders.yaml
      */
     public function testAuthorizeSuccessFalse()
     {
@@ -199,6 +225,92 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $this->replaceByMock('model', 'billsafe/config', $configMock);
         $paymentModelMock->authorize($payment, $amount);
         $this->assertEquals(Mage_Sales_Model_Order::STATE_PROCESSING, $order->getState());
+    }
+
+    /**
+     * @loadFixture ../../../var/fixtures/orders.yaml
+     */
+    public function testAuthorizeWithToken()
+    {
+        $this->mockSessions();
+        $this->mockDataHelperForQuote();
+
+        $order = Mage::getModel('sales/order')->load(11);
+        $payment = $order->getPayment();
+        $amount = $order->getBaseGrandTotal();
+        $infoInstance = new Varien_Object();
+        $infoInstance->setOrder($order);
+
+        $configMock = $this->getModelMock('billsafe/config', array(
+                'isBillSafeDirectEnabled',
+                'getBillSafeOrderStatus'
+            )
+        );
+        $configMock->expects($this->any())
+            ->method('isBillSafeDirectEnabled')
+            ->will($this->returnValue(false));
+
+        $configMock->expects($this->any())
+            ->method('getBillSafeOrderStatus')
+            ->will($this->returnValue('pending'));
+        $this->replaceByMock('model', 'billsafe/config', $configMock);
+
+        $fakeResponse = new Varien_Object();
+        $fakeResponse->setResponseToken('token');
+        $clientMock = $this->getModelMock('billsafe/client', array('prepareOrder'));
+        $clientMock->expects($this->once())
+            ->method('prepareOrder')
+            ->will($this->returnValue($fakeResponse));
+        $this->replaceByMock('model', 'billsafe/client', $clientMock);
+
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getInfoInstance', 'cancel'));
+        $paymentModelMock->expects($this->any())
+            ->method('getInfoInstance')
+            ->will($this->returnValue($infoInstance));
+        $paymentModelMock->expects($this->any())
+            ->method('cancel')
+            ->will($this->returnValue(null));
+        $paymentModelMock->authorize($payment, $amount);
+        $this->assertEquals('token', Mage::registry(Netresearch_Billsafe_Model_Config::TOKEN_REGISTRY_KEY));
+
+    }
+
+    /**
+     * @loadFixture ../../../var/fixtures/orders.yaml
+     * @expectedException Mage_Core_Exception
+     */
+    public function testAuthorizeWithTokenFails()
+    {
+        $this->mockSessions();
+        $this->mockDataHelperForQuote();
+
+        $order = Mage::getModel('sales/order')->load(11);
+;
+        $infoInstance = new Varien_Object();
+        $infoInstance->setOrder($order);
+
+        $configMock = $this->getModelMock('billsafe/config', array(
+                'isBillSafeDirectEnabled',
+            )
+        );
+        $configMock->expects($this->any())
+            ->method('isBillSafeDirectEnabled')
+            ->will($this->returnValue(false));
+
+        $clientMock = $this->getModelMock('billsafe/client', array('prepareOrder'));
+        $clientMock->expects($this->once())
+            ->method('prepareOrder')
+            ->will($this->throwException(new Exception('catch me')));
+        $this->replaceByMock('model', 'billsafe/client', $clientMock);
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getInfoInstance', 'cancel'));
+        $paymentModelMock->expects($this->any())
+            ->method('getInfoInstance')
+            ->will($this->returnValue($infoInstance));
+        $paymentModelMock->expects($this->any())
+            ->method('cancel')
+            ->will($this->returnValue(null));
+        $paymentModelMock->authorize($order->getPayment(), $order->getBaseGrandTotal());
+
     }
 
     /**
@@ -365,10 +477,13 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
             ->will($this->returnValue(10));
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
 
-        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData'));
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData', 'checkIfAllItemsAreVirtual'));
         $paymentModelMock->expects($this->any())
             ->method('getConfigData')
             ->will($this->returnValue(true));
+        $paymentModelMock->expects($this->any())
+            ->method('checkIfAllItemsAreVirtual')
+            ->will($this->returnValue(false));
         $this->assertFalse($paymentModelMock->isAvailable($quote));
     }
 
@@ -410,10 +525,13 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
 
-        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData'));
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData', 'checkIfAllItemsAreVirtual'));
         $paymentModelMock->expects($this->any())
             ->method('getConfigData')
             ->will($this->returnValue(true));
+        $paymentModelMock->expects($this->any())
+            ->method('checkIfAllItemsAreVirtual')
+            ->will($this->returnValue(false));
 
         $feeProduct = new Varien_Object();
         $feeProduct->setExceedsMaxAmount(true);
@@ -470,10 +588,13 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
 
-        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData'));
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData', 'checkIfAllItemsAreVirtual'));
         $paymentModelMock->expects($this->any())
             ->method('getConfigData')
             ->will($this->returnValue(true));
+        $paymentModelMock->expects($this->any())
+            ->method('checkIfAllItemsAreVirtual')
+            ->will($this->returnValue(false));
 
         $feeProduct = new Varien_Object();
         $feeProduct->setExceedsMaxAmount(false);
@@ -521,10 +642,14 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
 
-        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData'));
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array('getConfigData', 'checkIfAllItemsAreVirtual'));
         $paymentModelMock->expects($this->any())
             ->method('getConfigData')
             ->will($this->returnValue(true));
+
+        $paymentModelMock->expects($this->any())
+            ->method('checkIfAllItemsAreVirtual')
+            ->will($this->returnValue(false));
 
         $feeProduct = new Varien_Object();
 
@@ -579,7 +704,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
         $paymentModelMock = $this->getModelMock('billsafe/payment', array(
             'getConfigData',
-            'checkIfAllItemsAreVirtual'
+            'checkIfAllItemsAreVirtual',
+            'prevalidateOrder'
             )
         );
         $paymentModelMock->expects($this->any())
@@ -599,6 +725,76 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $this->replaceByMock('helper', 'paymentfee/data', $feeDataHelperMock);
 
         $this->assertTrue($paymentModelMock->isAvailable($quote));
+        $quote->getShippingAddress()->setStreet('not equal anymore');
+        $this->assertFalse($paymentModelMock->isAvailable($quote));
+    }
+
+    /**
+     * @loadFixture ../../../var/fixtures/orders.yaml
+     */
+    public function testIsAvailableReturnsFalseIfPrevalidateOrdercheckFails()
+    {
+
+        $tax = new Varien_Object();
+        $tax->setValue(10);
+        $quote = $this->getModelMock('sales/quote', array('getTotals'));
+        $quote->expects($this->any())
+            ->method('getTotals')
+            ->will($this->returnValue(array('tax' => $tax)));
+
+        $quote->setGrandTotal(110);
+
+        $sessionMock = $this->getModelMockBuilder('customer/session', array('getCustomer'))
+            ->disableOriginalConstructor() // This one removes session_start and other methods usage
+            ->getMock();
+        $customer = Mage::getModel('customer/customer');
+        $customer->setGroupId(1);
+        $sessionMock->expects($this->any())
+            ->method('getCustomer')
+            ->will($this->returnValue($customer));
+        $this->replaceByMock('singleton', 'customer/session', $sessionMock);
+
+        $configModelMock = $this->getModelMock('billsafe/config', array(
+                'getBillSafeMinAmount',
+                'getBillSafeMaxAmount',
+            )
+        );
+        $configModelMock->expects($this->any())
+            ->method('getBillSafeMinAmount')
+            ->will($this->returnValue(15));
+
+        $configModelMock->expects($this->any())
+            ->method('getBillSafeMaxAmount')
+            ->will($this->returnValue(999));
+
+        $this->replaceByMock('model', 'billsafe/config', $configModelMock);
+
+        $paymentModelMock = $this->getModelMock('billsafe/payment', array(
+                'getConfigData',
+                'checkIfAllItemsAreVirtual',
+                'prevalidateOrder'
+            )
+        );
+        $paymentModelMock->expects($this->any())
+            ->method('checkIfAllItemsAreVirtual')
+            ->will($this->returnValue(false));
+
+        $paymentModelMock->expects($this->any())
+            ->method('getConfigData')
+            ->will($this->returnValue(true));
+        $paymentModelMock->expects($this->any())
+            ->method('prevalidateOrder')
+            ->will($this->throwException(new Mage_Core_Exception('test exception')));
+
+        $feeProduct = new Varien_Object();
+
+        $feeDataHelperMock = $this->getHelperMock('paymentfee/data', array('getUpdatedFeeProduct'));
+        $feeDataHelperMock->expects($this->any())
+            ->method('getUpdatedFeeProduct')
+            ->will($this->returnValue($feeProduct));
+        $this->replaceByMock('helper', 'paymentfee/data', $feeDataHelperMock);
+
+        $this->assertFalse($paymentModelMock->isAvailable($quote));
     }
 
     /**
@@ -760,5 +956,27 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
             ->method('getClient')
             ->will($this->returnValue($client));
         $this->assertEquals('', $paymentModelMock->getOrderPlaceRedirectUrl());
+    }
+
+    protected function mockSessions()
+    {
+        $sessionMock = $this->getModelMockBuilder('checkout/session')
+            ->disableOriginalConstructor() // This one removes session_start and other methods usage
+            ->getMock();
+        $this->replaceByMock('singleton', 'checkout/session', $sessionMock);
+
+        $sessionMock = $this->getModelMockBuilder('customer/session')
+            ->disableOriginalConstructor() // This one removes session_start and other methods usage
+            ->getMock();
+        $this->replaceByMock('singleton', 'customer/session', $sessionMock);
+    }
+
+    protected function mockDataHelperForQuote()
+    {
+        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock->expects($this->any())
+            ->method('getStoreIdfromQuote')
+            ->will($this->returnValue(null));
+        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
     }
 }

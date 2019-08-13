@@ -299,6 +299,17 @@
                                 <active>1</active>
                             </depends>
                         </specificcountry>
+                        
+                        <default_gender>
+                            <label>Default Customer Gender</label>
+                            <comment>If customer gender cannot be determined from account data, use this as default value.</comment>
+                            <frontend_type>select</frontend_type>
+                            <sort_order>130</sort_order>
+                            <source_model>billsafe/adminhtml_system_config_source_gender</source_model>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                        </default_gender>
                     </fields>
                 </billsafe>
             </groups>

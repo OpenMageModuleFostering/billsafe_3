@@ -85,7 +85,8 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
      * gets relevant parts from the customers address
      *
      * @param Mage_Sales_Model_Quote_Address $address
-     * @param bool                           $includeEmail
+     * @param bool                           $includeEmail - returned data contain customer's e-mail address if true
+     * @param bool                           $useNames - return data contains customer's first- and lastname if true
      *
      * @return array - the parts for billSAFE
      */
@@ -138,8 +139,12 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
      */
     public function prevalidateOrder($quote)
     {
-        $params = $this->prepareParamsForPrevalidateOrder($quote);
-        return Mage::getModel('billsafe/client')->prevalidateOrder($params);
+        try {
+            $params = $this->prepareParamsForPrevalidateOrder($quote);
+            return Mage::getModel('billsafe/client')->prevalidateOrder($params);
+        } catch (Exception $e) {
+            return new stdClass();
+        }
     }
 
     /**
@@ -164,7 +169,7 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
             'order' => $this->getOrderParamsForProcessOrder(
                 $quote, $order
             ),
-            'customer' => $this->getCustomerDataForProcessOrder($quote),
+            'customer' => $this->getFullCustomerData($quote),
             'articleList' => $this->buildArticleList($order, self::TYPE_PO),
             'product' => 'invoice',
             'sessionId' => md5(
@@ -184,7 +189,14 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
         return $params;
     }
 
-    protected function getCustomerDataForProcessOrder($quote)
+    /**
+     * retrieves the complete customer data for calls to BillSAFE
+     *
+     * @param Mage_Sales_Model_Quote $quote - the current quote
+     *
+     * @return array - the customer data including dob and gender
+     */
+    protected function getFullCustomerData(Mage_Sales_Model_Quote $quote)
     {
         $customerData = $this->getCustomerData(
             $quote->getBillingAddress(), true, true
@@ -666,15 +678,8 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
             $cancelUrl = Mage::getUrl('billsafe/payment/cancellation');
         }
 
-        $customer = $order->getCustomer();
-        $address = $order->getBillingAddress();
-        $street = $address->getStreet();
         $quote = Mage::getModel('checkout/cart')->getQuote();
 
-        $email = Mage::helper('billsafe/data')->coalesce(
-            $customer->getEmail(), $order->getCustomerEmail(), $quote->getCustomerEmail()
-        );
-        $customerHelper = Mage::helper('billsafe/customer');
         $params = array(
             'order' => array(
                 'number' => $order->getIncrementId(),
@@ -686,24 +691,7 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
                 ),
                 'currencyCode' => 'EUR',
             ),
-            'customer' => array(
-                'company' => $address->getCompany(),
-                'gender' => $customerHelper->getCustomerGender(
-                    $address, $order, $customer
-                ),
-                'firstname' => $address->getFirstname(),
-                'lastname' => $address->getLastname(),
-                'street' => implode(' ', $street),
-                'houseNumber' => '',
-                'postcode' => $address->getPostcode(),
-                'city' => $address->getCity(),
-                'country' => 'DE',
-                'email' => $email,
-                'dateOfBirth' => $customerHelper->getCustomerDob(
-                    $customer, $order
-                ),
-                'phone' => $address->getTelephone(),
-            ),
+            'customer' => $this->getFullCustomerData($quote),
             'articleList' => $this->buildArticleList($order, self::TYPE_PO),
             'product' => 'invoice',
             'url' => array(

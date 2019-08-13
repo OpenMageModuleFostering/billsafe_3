@@ -36,26 +36,24 @@ class Netresearch_Billsafe_Helper_Customer extends Mage_Customer_Helper_Data
      * @param Mage_Customer_Model_Address $address
      * @param Mage_Sales_Model_Order $order
      * @param Mage_Customer_Model_Customer $customer
-     * @return void
+     * @return string
      */
     public function getCustomerGender($address, $order, $customer)
     {
-        $prefix = strtolower(Mage::helper('billsafe/data')->coalesce(
-                $this->getGenderText($address, 'gender'),
-                $this->getGenderText($order, 'customer_gender'),
-                $this->getGenderText($customer, 'gender'),
-                $address->getPrefix(),
-                $order->getCustomerPrefix(),
-                $customer->getPrefix()
-            ));
-        if (in_array($prefix,
-            array('mrs.', 'mrs', 'frau', 'fr.', 'fr', 'fräulein', 'frau dr.',
-                  'female'))) {
-            return 'f';
+        if ($address->getCompany()) {
+            // B2B, no gender necessary
+            return '';
         }
-        return 'm';
-    }
 
+        $gender = Mage::helper('billsafe/data')->coalesce(
+            $this->getGenderText($address, 'gender'),
+            $this->getGenderText($order, 'customer_gender'),
+            $this->getGenderText($customer, 'gender'),
+            Mage::getModel('billsafe/config')->getDefaultCustomerGender($order->getStoreId())
+        );
+
+        return ($gender === 'Female') ? 'f' : 'm';
+    }
 
 
     /**
@@ -82,13 +80,13 @@ class Netresearch_Billsafe_Helper_Customer extends Mage_Customer_Helper_Data
 
 
     /**
-     * Retrive text of gender attribute of given entity.
+     * Retrieve text of gender attribute of given entity.
      *
      * @param Mage_Core_Model_Abstract $entity
      * @param string $attributeCode
      * @return string
      */
-    protected function getGenderText($entity, $attributeCode)
+    public function getGenderText($entity, $attributeCode)
     {
         return Mage::getSingleton('eav/config')
             ->getAttribute('customer', 'gender')

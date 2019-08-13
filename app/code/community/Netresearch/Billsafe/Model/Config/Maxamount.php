@@ -18,7 +18,7 @@ class Netresearch_Billsafe_Model_Config_Maxamount
         $storeId = Mage::app()->getStore()->getId();
         $config = $this->getTempConfig();
         if ($config->isPaymentFeeEnabled($storeId)) {
-            $max = Mage::getModel('billsafe/config')->getFeeMaxAmount();
+            $max = $this->getMax();
             if ($max < $this->getValue()) {
                 $this->setValue($max);
             }
@@ -49,7 +49,7 @@ class Netresearch_Billsafe_Model_Config_Maxamount
                     $msg = 'Maximum order amount is a required entry!';
                     throw new Exception(Mage::helper('billsafe')->__($msg));
                 }
-                $max = Mage::getModel('billsafe/config')->getFeeMaxAmount();
+                $max = $this->getMax();
                 if (is_null($max)) {
                     throw new Exception(Mage::helper('billsafe')->__(
                         'No connection to BillSAFE. Please check your credentials.'
@@ -67,5 +67,22 @@ class Netresearch_Billsafe_Model_Config_Maxamount
         }
 
         parent::_beforeSave();
+    }
+
+    /**
+     * gets the max amount for the payment fee from BillSAFE
+     *
+     * @return float - the maximum amount of the payment fee or null if it couldn't be obtained
+     */
+    protected function getMax()
+    {
+        $max = null;
+        try {
+            $max = Mage::getModel('billsafe/config')->getFeeMaxAmount();
+        } catch (Exception $e) {
+            $this->getDataHelper()->log('error obtaining the max fee amount ' . $e->getMessage());
+            Mage::logException($e);
+        }
+        return $max;
     }
 }

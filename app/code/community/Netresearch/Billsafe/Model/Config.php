@@ -122,6 +122,12 @@ class Netresearch_Billsafe_Model_Config extends Varien_Object
     const CONFIG_PATH_BILLSAFE_PUBLIC_KEY = 'payment/billsafe/merchant_public_key';
 
     /**
+     * BillSAFE default customer gender config path
+     * @var string
+     */
+    const CONFIG_PATH_BILLSAFE_CUSTOMER_GENDER = 'payment/billsafe/default_gender';
+
+    /**
      * getter for billsafe exeeding min fee amount
      *
      * @param int $storeId
@@ -392,12 +398,25 @@ class Netresearch_Billsafe_Model_Config extends Varien_Object
      *
      * @param int $storeId  - the store which confing should be used
      *
-     * @retugetCustomerGenderrn string - the merchants public key
+     * @return string - the merchants public key
      */
     public function getPublicKey($storeId = null)
     {
         return Mage::getStoreConfig(
             self::CONFIG_PATH_BILLSAFE_PUBLIC_KEY, $storeId
+        );
+    }
+
+    /**
+     * Return default gender as set in module configuration.
+     *
+     * @param mixed $storeId
+     * @return string Gender label
+     */
+    public function getDefaultCustomerGender($storeId = null)
+    {
+        return Mage::getStoreConfig(
+            self::CONFIG_PATH_BILLSAFE_CUSTOMER_GENDER, $storeId
         );
     }
 

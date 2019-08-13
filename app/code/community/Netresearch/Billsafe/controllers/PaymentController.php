@@ -18,7 +18,7 @@ class Netresearch_Billsafe_PaymentController extends Mage_Core_Controller_Front_
             if (property_exists($response, 'declineReason') && property_exists($response->declineReason, 'buyerMessage')) {
                 $msg = $response->declineReason->buyerMessage;
             }
-            Mage::getSingleton('core/session')->addError(Mage::helper('billsafe')->__($msg));
+            Mage::getSingleton('checkout/session')->addError(Mage::helper('billsafe')->__($msg));
 
             return $this->_redirect('checkout/cart');
         }
@@ -58,7 +58,7 @@ class Netresearch_Billsafe_PaymentController extends Mage_Core_Controller_Front_
         $this->cancelLastOrderAndRestoreCart();
         // Set flash message
         $msg = 'Billsafe payment has been cancelled';
-        Mage::getSingleton('core/session')->addNotice($this->getHelper()->__($msg));
+        Mage::getSingleton('checkout/session')->addNotice($this->getHelper()->__($msg));
 
         return $this->_redirect('checkout/cart');
     }

@@ -99,7 +99,6 @@ class Netresearch_Billsafe_Model_Observer
         return Mage::getSingleton('checkout/type_onepage');
     }
 
-
     public function cleanUpSession($observer)
     {
         if (Mage::getSingleton('customer/session')->getData(
@@ -127,5 +126,19 @@ class Netresearch_Billsafe_Model_Observer
         $dob   = $observer->getEvent()->getInput()->getDob();
         Mage::getSingleton('checkout/session')->setData('customer_dob', $dob);
     }
-}
 
+    /**
+    * Adds the billsafe payment and legal notes to the invoice notes
+    */
+    public function firegentoPdfInvoiceInsertNotice(Varien_Event_Observer $observer)
+    {
+        $order = $observer->getEvent()->getOrder();
+        $result = $observer->getEvent()->getResult();
+        if ($order->getPayment()->getMethod() == Netresearch_Billsafe_Model_Payment::CODE) {
+            $notes = $result->getNotes();
+            $infoText = Mage::helper('payment')->getInfoBlock($order->getPayment())->toMrgPdf() . "\n";
+            $notes = array_merge($notes, explode("\n", $infoText));
+            $result->setNotes($notes);
+        }
+    }
+}

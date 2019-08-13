@@ -10,8 +10,6 @@
 class Netresearch_Billsafe_Test_Helper_CustomerTest
     extends EcomDev_PHPUnit_Test_Case
 {
-
-
     public function testGetCustomerDob()
     {
         $helper = Mage::helper('billsafe/customer');
@@ -44,28 +42,60 @@ class Netresearch_Billsafe_Test_Helper_CustomerTest
         $address = new Varien_Object();
         $customer = new Varien_Object();
         $order = new Varien_Object();
-        $address->setPrefix('');
-        $customer->setPrefix('');
-        $helperMock = $this->getMockedGenderTextHelper(null);
-        $this->assertEquals(
-            'm', $helperMock->getCustomerGender($address, $order, $customer)
+
+        $defaultGender = 'Female';
+
+        $configMock = $this->getModelMock('billsafe/config', array(
+            'getDefaultCustomerGender',
+        ));
+        $configMock->expects($this->any())
+            ->method('getDefaultCustomerGender')
+            ->will($this->returnValue($defaultGender));
+        $this->replaceByMock('model', 'billsafe/config', $configMock);
+
+        $helperMock = $this->getHelperMock(
+            'billsafe/customer', array('getGenderText')
         );
-        $femaleValues = array('mrs.', 'mrs', 'frau', 'fr.', 'fr',
-                                          'fräulein', 'frau dr.', 'female');
-        foreach ($femaleValues as $femaleValue) {
-            $helperMock = $this->getMockedGenderTextHelper($femaleValue);
-            $this->assertEquals(
-                'f', $helperMock->getCustomerGender($address, $order, $customer)
-            );
-        }
-        $maleValues = array('mr.', 'mr', 'herr', 'herr dr.',
-                                             'male');
-        foreach ($maleValues as $maleValue) {
-            $helperMock = $this->getMockedGenderTextHelper($maleValue);
-            $this->assertEquals(
-                'm', $helperMock->getCustomerGender($address, $order, $customer)
-            );
-        }
+        $helperMock->expects($this->any())
+            ->method('getGenderText')
+            ->will($this->onConsecutiveCalls(
+                null, null, null,
+                null, null, 'MyCustomerGender',
+                null, 'MyOrderGender', null,
+                'MyAddressGender', null, null
+            ));
+        $this->replaceByMock('helper', 'billsafe/customer', $helperMock);
+
+        // Fallback to default gender as configured (transformed)
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('f', $gender);
+
+        // Gender as given in customer account (transformed)
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('m', $gender);
+
+        // Gender as given in order (transformed)
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('m', $gender);
+
+        // Gender as given in address (transformed)
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('m', $gender);
+
+        // Gender not necessary with B2B orders
+        $address->setCompany('Foo AG');
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('', $gender);
     }
 
     public function testGetGenderText()

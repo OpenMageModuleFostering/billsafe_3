@@ -71,7 +71,7 @@ endobj
 % 'R7': class PDFInfo 
 7 0 obj
 << /Author ()
- /CreationDate (D:20131213165217-01'00')
+ /CreationDate (D:20140327143413-01'00')
  /Keywords ()
  /Producer (ReportLab http://www.reportlab.com)
  /Subject (\(unspecified\))
@@ -87,7 +87,7 @@ endobj
 % 'R9': class PDFStream 
 9 0 obj
 % page stream
-<< /Length 7224 >>
+<< /Length 9701 >>
 stream
 1 0 0 1 0 0 cm BT /F1 12 Tf 14.4 TL ET
 q
@@ -108,23 +108,25 @@ q
 1 0 0 1 62.69291 638.3307 cm
 Q
 q
-1 0 0 1 62.69291 356.3307 cm
+1 0 0 1 62.69291 212.3307 cm
 1 1 1 rg
-n 0 282 469.8898 -18 re f*
+n 0 426 469.8898 -18 re f*
 .878431 .878431 .878431 rg
+n 0 408 469.8898 -144 re f*
+1 1 1 rg
 n 0 264 469.8898 -120 re f*
-1 1 1 rg
-n 0 144 469.8898 -54 re f*
 .878431 .878431 .878431 rg
-n 0 90 469.8898 -54 re f*
+n 0 144 469.8898 -54 re f*
 1 1 1 rg
+n 0 90 469.8898 -54 re f*
+.878431 .878431 .878431 rg
 n 0 36 469.8898 -36 re f*
 .960784 .960784 .862745 rg
-n 0 282 469.8898 -18 re f*
+n 0 426 469.8898 -18 re f*
 0 .533333 .603922 rg
 BT /F1 10 Tf 12 TL ET
 q
-1 0 0 1 6 267 cm
+1 0 0 1 6 411 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 46.73622 12 re f*
@@ -135,7 +137,7 @@ BT 1 0 0 1 0 4.82 Tm /F2 10 Tf 12 TL 2.52811 0 Td (Revision) Tj T* -2.52811 0 Td
 Q
 Q
 q
-1 0 0 1 64.73622 267 cm
+1 0 0 1 64.73622 411 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 46.73622 12 re f*
@@ -146,7 +148,7 @@ BT 1 0 0 1 0 4.82 Tm /F2 10 Tf 12 TL 12.53311 0 Td (Date) Tj T* -12.53311 0 Td E
 Q
 Q
 q
-1 0 0 1 123.4724 267 cm
+1 0 0 1 123.4724 411 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 340.4173 12 re f*
@@ -157,6 +159,166 @@ BT 1 0 0 1 0 4.82 Tm /F2 10 Tf 12 TL 142.7037 0 Td (Description) Tj T* -142.7037
 Q
 Q
 0 0 0 rg
+q
+1 0 0 1 6 393 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (14.03.27) Tj T* ET
+Q
+Q
+q
+1 0 0 1 64.73622 393 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2014-03-27) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 393 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 387 cm
+Q
+q
+1 0 0 1 123.4724 387 cm
+Q
+q
+1 0 0 1 123.4724 375 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Configure customer default gender for API transmission) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 369 cm
+Q
+q
+1 0 0 1 123.4724 345 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 16.82 Tm /F1 10 Tf 12 TL 8.534554 Tw (Modify FireGento_Pdf invoice printing according to BillSAFE) Tj T* 0 Tw (requirements) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 345 cm
+Q
+q
+1 0 0 1 123.4724 333 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Improvements:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 327 cm
+Q
+q
+1 0 0 1 123.4724 327 cm
+Q
+q
+1 0 0 1 123.4724 303 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 16.82 Tm /F1 10 Tf 12 TL 3.921046 Tw (Obtain "Country Code" API parameter dynamically from customer) Tj T* 0 Tw (address) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 297 cm
+Q
+q
+1 0 0 1 123.4724 285 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Display API error messages in customer session) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 279 cm
+Q
+q
+1 0 0 1 123.4724 267 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Handle unavailable BillSAFE API) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 267 cm
+Q
 q
 1 0 0 1 6 249 cm
 q
@@ -523,23 +685,24 @@ q
 1 j
 0 0 0 RG
 .25 w
+n 0 408 m 469.8898 408 l S
 n 0 264 m 469.8898 264 l S
 n 0 144 m 469.8898 144 l S
 n 0 90 m 469.8898 90 l S
 n 0 36 m 469.8898 36 l S
-n 58.73622 0 m 58.73622 282 l S
-n 117.4724 0 m 117.4724 282 l S
-n 0 282 m 469.8898 282 l S
+n 58.73622 0 m 58.73622 426 l S
+n 117.4724 0 m 117.4724 426 l S
+n 0 426 m 469.8898 426 l S
 n 0 0 m 469.8898 0 l S
-n 0 0 m 0 282 l S
-n 469.8898 0 m 469.8898 282 l S
+n 0 0 m 0 426 l S
+n 469.8898 0 m 469.8898 426 l S
 Q
 Q
 q
-1 0 0 1 62.69291 356.3307 cm
+1 0 0 1 62.69291 212.3307 cm
 Q
 q
-1 0 0 1 62.69291 356.3307 cm
+1 0 0 1 62.69291 212.3307 cm
 Q
 q
 1 0 0 1 426.3422 728.5039 cm
@@ -601,17 +764,17 @@ xref
 0000018047 00000 n
 0000018280 00000 n
 0000018385 00000 n
-0000025711 00000 n
-0000025794 00000 n
-0000025887 00000 n
+0000028188 00000 n
+0000028271 00000 n
+0000028364 00000 n
 trailer
 << /ID 
  % ReportLab generated PDF document -- digest (http://www.reportlab.com) 
- [(\017k\\\274$\306\026\250\023\333\237\206\333E_\330) (\017k\\\274$\306\026\250\023\333\237\206\333E_\330)] 
+ [(\254rg\303\376\005\273\343\242\013\256\235]\010]P) (\254rg\303\376\005\273\343\242\013\256\235]\010]P)] 
 
  /Info 7 0 R
  /Root 6 0 R
  /Size 13 >>
 startxref
-25934
+28411
 %%EOF
