@@ -1,0 +1,16 @@
+{
+    "name": "OpenMageModuleFostering/BillSAFE_3",
+    "type": "magento-module",
+    "license": "OSL3",
+    "homepage": "",
+    "description": "Billsafe Extension",
+    "authors": [
+    {
+        "name": "Kristian B\u00fcsch",
+        "email": "kbuesch@paypal.com"
+    }
+],
+    "suggest": {
+        "magento-hackathon/magento-composer-installer": "*"
+    }
+}
