@@ -373,9 +373,7 @@ class Netresearch_Billsafe_Model_Config extends Varien_Object
      */
     public function isBillSafeDirectEnabled($storeId = null)
     {
-        return (boolean)Mage::getStoreConfig(
-            self::CONFIG_PATH_BILLSAFE_DIRECT, $storeId
-        );
+        return Mage::getStoreConfigFlag(self::CONFIG_PATH_BILLSAFE_DIRECT, $storeId);
     }
 
     /**

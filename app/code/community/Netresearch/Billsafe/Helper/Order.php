@@ -752,7 +752,7 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
             $payment->save();
         } catch (Exception $e) {
             $message = $e->getMessage();
-            Mage::helper('billsafe/data')->log(
+            $this->getHelper()->log(
                 'exception during handling getPaymentInstruction. Message is %s', $message
             );
         }
@@ -809,5 +809,25 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
         }
 
         return true;
+    }
+
+    /**
+     * Check if current order applies for BillSAFE Onsite Checkout.
+     *
+     * @return boolean
+     */
+    public function isBillsafeOnsiteCheckout(Mage_Sales_Model_Quote $quote = null)
+    {
+        if (!$quote) {
+            $quote = $this->getHelper()->getQuotefromSession();
+        }
+
+        // onsite checkout must be enabled via config
+        $onsiteConfig = Mage::getModel('billsafe/config')
+            ->isBillSafeDirectEnabled($quote->getStoreId());
+        // b2b orders (company is set in quote) must use redirect gateway
+        $onsiteCompany = !Mage::helper('billsafe/customer')
+            ->getCustomerCompany($quote);
+        return ($onsiteConfig && $onsiteCompany);
     }
 }

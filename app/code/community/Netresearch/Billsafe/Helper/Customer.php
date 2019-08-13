@@ -29,6 +29,7 @@
  */
 class Netresearch_Billsafe_Helper_Customer extends Mage_Customer_Helper_Data
 {
+    protected $_dataHelper = null;
 
     /**
      * Tries to guess customers gender in billsafe required form (f || m)
@@ -40,17 +41,29 @@ class Netresearch_Billsafe_Helper_Customer extends Mage_Customer_Helper_Data
      */
     public function getCustomerGender($address, $order, $customer)
     {
-        if ($address->getCompany()) {
-            // B2B, no gender necessary
-            return '';
-        }
-
         $gender = Mage::helper('billsafe/data')->coalesce(
             $this->getGenderText($address, 'gender'),
             $this->getGenderText($order, 'customer_gender'),
             $this->getGenderText($customer, 'gender'),
             Mage::getModel('billsafe/config')->getDefaultCustomerGender($order->getStoreId())
         );
+
+        // override previous gender configuration with the most common prefixes (DE)
+        if (in_array('Herr', array(
+            $address->getPrefix(),
+            $order->getCustomerPrefix(),
+            $customer->getPrefix())
+        )) {
+            $gender = 'Male';
+        }
+
+        if (in_array('Frau', array(
+            $address->getPrefix(),
+            $order->getCustomerPrefix(),
+            $customer->getPrefix())
+        )) {
+            $gender = 'Female';
+        }
 
         return ($gender === 'Female') ? 'f' : 'm';
     }
@@ -92,6 +105,37 @@ class Netresearch_Billsafe_Helper_Customer extends Mage_Customer_Helper_Data
             ->getAttribute('customer', 'gender')
             ->getSource()
             ->getOptionText($entity->getData($attributeCode));
+    }
+
+    /**
+     * @param Mage_Sales_Model_Quote $quote
+     * @return string
+     */
+    public function getCustomerCompany(Mage_Sales_Model_Quote $quote = null)
+    {
+        if(is_null($quote)){
+            $quote = $this->getDataHelper()->getQuotefromSession();
+        }
+        return $quote->getBillingAddress()->getCompany();
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Data|null
+     */
+
+    protected function getDataHelper()
+    {
+        if(is_null($this->_dataHelper)){
+            $this->_dataHelper = Mage::helper('billsafe/data');
+        }
+        return $this->_dataHelper;
+    }
+
+    /**
+     * @param Netresearch_Billsafe_Helper_Data $dataHelper
+     */
+    public function setDataHelper(Netresearch_Billsafe_Helper_Data $dataHelper){
+        $this->_dataHelper = $dataHelper;
     }
 
 }

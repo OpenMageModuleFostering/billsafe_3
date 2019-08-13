@@ -7,25 +7,68 @@
  */
 class Netresearch_Billsafe_Model_Config_Abstract extends Mage_Core_Model_Config_Data
 {
-    protected $dataHelper = null;
+
+    protected $_config;
+    protected $_dataHelper;
+    protected $_customerHelper;
+
+
 
     /**
-     * @param null $dataHelper
+     * @param mixed $config
      */
-    public function setDataHelper($dataHelper)
+    public function setConfig(Netresearch_Billsafe_Model_Config $config)
     {
-        $this->dataHelper = $dataHelper;
+        $this->_config = $config;
     }
 
     /**
-     * @return null
+     * @return Netresearch_Billsafe_Model_Config
+     */
+    public function getConfig()
+    {
+        if(is_null($this->_config)){
+            $this->_config = Mage::getSingleton('billsafe/config');
+        }
+        return $this->_config;
+    }
+
+    /**
+     * @param Netresearch_Billsafe_Helper_Data $dataHelper
+     */
+    public function setDataHelper(Netresearch_Billsafe_Helper_Data $dataHelper)
+    {
+        $this->_dataHelper = $dataHelper;
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Data
      */
     public function getDataHelper()
     {
-        if (null === $this->dataHelper) {
-            $this->dataHelper = Mage::helper('billsafe/data');
+        if(is_null($this->_dataHelper)){
+            $this->_dataHelper = Mage::helper('billsafe/data');
         }
-        return $this->dataHelper;
+        return $this->_dataHelper;
+    }
+
+    /**
+     * @param Netresearch_Billsafe_Helper_Customer $customerHelper
+     */
+    public function setCustomerHelper(Netresearch_Billsafe_Helper_Customer $customerHelper)
+    {
+        $this->_customerHelper = $customerHelper;
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Customer
+     */
+    public function getCustomerHelper()
+    {
+        if(is_null($this->_customerHelper)){
+            $this->_customerHelper = Mage::helper('billsafe/customer');
+        }
+        return $this->_customerHelper;
     }
 
 

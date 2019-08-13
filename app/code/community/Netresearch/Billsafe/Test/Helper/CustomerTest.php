@@ -62,7 +62,9 @@ class Netresearch_Billsafe_Test_Helper_CustomerTest
                 null, null, null,
                 null, null, 'MyCustomerGender',
                 null, 'MyOrderGender', null,
-                'MyAddressGender', null, null
+                'MyAddressGender', null, null,
+                null, null, null,
+                null, null, null
             ));
         $this->replaceByMock('helper', 'billsafe/customer', $helperMock);
 
@@ -90,12 +92,19 @@ class Netresearch_Billsafe_Test_Helper_CustomerTest
         );
         $this->assertEquals('m', $gender);
 
-        // Gender not necessary with B2B orders
+        // B2B orders also need the gender parameter
         $address->setCompany('Foo AG');
         $gender = Mage::helper('billsafe/customer')->getCustomerGender(
             $address, $order, $customer
         );
-        $this->assertEquals('', $gender);
+        $this->assertEquals('f', $gender);
+
+        // Assume prefix was given in customer account
+        $customer->setPrefix('Herr');
+        $gender = Mage::helper('billsafe/customer')->getCustomerGender(
+            $address, $order, $customer
+        );
+        $this->assertEquals('m', $gender);
     }
 
     public function testGetGenderText()

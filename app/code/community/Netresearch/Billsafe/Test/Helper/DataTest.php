@@ -224,11 +224,14 @@ class Netresearch_Billsafe_Test_Helper_DataTest
         $configModelMock->expects($this->any())
             ->method('getPaymentFeeSku')
             ->will($this->returnValue('fee'));
-
+        $helperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $helperMock->expects($this->any())
+            ->method('getStoreIdfromQuote')
+            ->will($this->returnValue(null));
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
-
-        $this->assertFalse(Mage::helper('billsafe/data')->isFeeItem($itemTwo));
-        $this->assertTrue(Mage::helper('billsafe/data')->isFeeItem($itemOne));
+        $this->mockSessions();
+        $this->assertFalse($helperMock->isFeeItem($itemTwo));
+        $this->assertTrue($helperMock->isFeeItem($itemOne));
     }
 
 
@@ -250,5 +253,18 @@ class Netresearch_Billsafe_Test_Helper_DataTest
         $method = $class->getMethod($name);
         $method->setAccessible(true);
         return $method;
+    }
+
+    protected function mockSessions()
+    {
+        $sessionMock = $this->getModelMockBuilder('checkout/session')
+                            ->disableOriginalConstructor() // This one removes session_start and other methods usage
+                            ->getMock();
+        $this->replaceByMock('singleton', 'checkout/session', $sessionMock);
+
+        $sessionMock = $this->getModelMockBuilder('customer/session')
+                            ->disableOriginalConstructor() // This one removes session_start and other methods usage
+                            ->getMock();
+        $this->replaceByMock('singleton', 'customer/session', $sessionMock);
     }
 }

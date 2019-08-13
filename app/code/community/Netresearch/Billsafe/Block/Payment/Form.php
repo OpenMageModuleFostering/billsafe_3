@@ -24,12 +24,36 @@ class Netresearch_Billsafe_Block_Payment_Form extends Mage_Payment_Block_Form
     }
 
     /**
+     * @return Netresearch_Billsafe_Helper_Data
+     */
+    protected function getDataHelper()
+    {
+        return Mage::helper('billsafe/data');
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Customer
+     */
+    protected function getCustomerHelper()
+    {
+        return Mage::helper('billsafe/customer');
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Order
+     */
+    protected function getOrderHelper()
+    {
+        return Mage::helper('billsafe/order');
+    }
+
+    /**
      * Obtain BillSAFE Config
      * @return Netresearch_Billsafe_Model_Config
      */
     protected function _getBillsafeConfig()
     {
-        return Mage::helper('billsafe/data')->getConfig();
+        return $this->getDataHelper()->getConfig();
     }
 
     /**
@@ -46,7 +70,7 @@ class Netresearch_Billsafe_Block_Payment_Form extends Mage_Payment_Block_Form
      */
     public function getQuote()
     {
-        return Mage::helper('billsafe/data')->getQuotefromSession();
+        return $this->getDataHelper()->getQuotefromSession();
     }
 
     /**
@@ -91,20 +115,18 @@ class Netresearch_Billsafe_Block_Payment_Form extends Mage_Payment_Block_Form
      */
     public function getCustomerCompany()
     {
-        $quote = Mage::getSingleton('checkout/session')->getQuote();
-        $company = $quote->getBillingAddress()->getCompany();
-        return $company;
+
+        return $this->getCustomerHelper()->getCustomerCompany();
 
     }
 
     /**
      *
-     * @return true if billsafe direct is enabled, false otherwise
+     * @return true if billsafe direct is enabled for checkout, false otherwise
      */
     public function isBillSafeDirectEnabled()
     {
-        $storeId = $this->_getStoreId();
-        return $this->_getBillsafeConfig()->isBillSafeDirectEnabled($storeId);
+        return $this->getOrderHelper()->isBillsafeOnsiteCheckout($this->getQuote());
     }
 
     /**

@@ -36,7 +36,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $helperMock->expects($this->any())
             ->method('prevalidateOrder')
             ->will($this->returnValue($fakeResponse));
-        $this->replaceByMock('helper', 'billsafe/order', $helperMock);
+        $model->setOrderHelper($helperMock);
         $this->assertFalse($model->prevalidateOrder($quote));
 
         $fakeResponse = new stdClass();
@@ -50,7 +50,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $helperMock->expects($this->any())
             ->method('prevalidateOrder')
             ->will($this->returnValue($fakeResponse));
-        $this->replaceByMock('helper', 'billsafe/order', $helperMock);
+        $model->setOrderHelper($helperMock);
         $this->assertFalse($model->prevalidateOrder($quote));
         $this->assertFalse($model->isAvailableCheck());
         $this->assertEquals('foo', $model->getUnavailableMessage());
@@ -88,6 +88,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
     public function testAuthorizeSuccessFalse()
     {
         $order = Mage::getModel('sales/order')->load(11);
+        $quote = Mage::getModel('sales/quote')->load(1);
+        $order->setQuote($quote);
         $payment = $order->getPayment();
         $amount = $order->getBaseGrandTotal();
         $infoInstance = new Varien_Object();
@@ -118,9 +120,13 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
 
         // data helper
-        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock = $this->getHelperMock('billsafe/data',
+                                               array('getStoreIdfromQuote', 'getCustomerCompany'));
         $dataHelperMock->expects($this->any())
             ->method('getStoreIdfromQuote')
+            ->will($this->returnValue(null));
+        $dataHelperMock->expects($this->any())
+            ->method('getCustomerCompany')
             ->will($this->returnValue(null));
         $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
 
@@ -146,6 +152,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
     public function testAuthorizeSuccessTrue()
     {
         $order = Mage::getModel('sales/order')->load(11);
+        $quote = Mage::getModel('sales/quote')->load(1);
+        $order->setQuote($quote);
         $payment = $order->getPayment();
         $amount = $order->getBaseGrandTotal();
         $infoInstance = new Varien_Object();
@@ -191,11 +199,14 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $this->replaceByMock('helper', 'billsafe/order', $orderHelperMock);
 
         // data helper
-        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock = $this->getHelperMock('billsafe/data',
+                                               array('getStoreIdfromQuote', 'getCustomerCompany'));
         $dataHelperMock->expects($this->any())
             ->method('getStoreIdfromQuote')
             ->will($this->returnValue(null));
-        $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
+        $dataHelperMock->expects($this->any())
+                       ->method('getCustomerCompany')
+                       ->will($this->returnValue(null));
 
         $paymentModelMock = $this->getModelMock('billsafe/payment', array('getInfoInstance', 'cancel'));
         $paymentModelMock->expects($this->any())
@@ -204,7 +215,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $paymentModelMock->expects($this->any())
             ->method('cancel')
             ->will($this->returnValue(null));
-        $this->replaceByMock('model', 'billsafe/payment', $paymentModelMock);
+        $paymentModelMock->setDataHelper($dataHelperMock);
 
         $paymentModelMock->authorize($payment, $amount);
         $this->assertEquals('123', $payment->getTransactionId());
@@ -222,7 +233,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configMock->expects($this->any())
             ->method('getBillSafeOrderStatus')
             ->will($this->returnValue(Mage_Sales_Model_Order::STATE_PROCESSING));
-        $this->replaceByMock('model', 'billsafe/config', $configMock);
+
+        $paymentModelMock->setConfig($configMock);
         $paymentModelMock->authorize($payment, $amount);
         $this->assertEquals(Mage_Sales_Model_Order::STATE_PROCESSING, $order->getState());
     }
@@ -236,6 +248,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $this->mockDataHelperForQuote();
 
         $order = Mage::getModel('sales/order')->load(11);
+        $quote = Mage::getModel('sales/quote')->load(1);
+        $order->setQuote($quote);
         $payment = $order->getPayment();
         $amount = $order->getBaseGrandTotal();
         $infoInstance = new Varien_Object();
@@ -285,7 +299,9 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $this->mockDataHelperForQuote();
 
         $order = Mage::getModel('sales/order')->load(11);
-;
+        $quote = Mage::getModel('sales/quote')->load(1);
+        $order->setQuote($quote);
+
         $infoInstance = new Varien_Object();
         $infoInstance->setOrder($order);
 
@@ -298,7 +314,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
             ->will($this->returnValue(false));
 
         $clientMock = $this->getModelMock('billsafe/client', array('prepareOrder'));
-        $clientMock->expects($this->once())
+        $clientMock->expects($this->any())
             ->method('prepareOrder')
             ->will($this->throwException(new Exception('catch me')));
         $this->replaceByMock('model', 'billsafe/client', $clientMock);
@@ -391,7 +407,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
     {
         $path = Netresearch_Billsafe_Model_Config::CONFIG_PATH_ACTIVE;
         $storeFirst = Mage::app()->getStore(0)->load(0);
-
+        $this->mockSessions();
+        $this->mockDataHelperForQuote();
         $storeFirst->setConfig($path, 0);
         $quote = Mage::getModel('sales/quote')->load(1);
         $this->assertFalse(Mage::getModel('billsafe/payment')->isAvailable($quote));
@@ -466,12 +483,13 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
             ->will($this->returnValue($customer));
         $this->replaceByMock('singleton', 'customer/session', $sessionMock);
 
-        $configModelMock = $this->getModelMock('billsafe/config', array('getBillSafeMinAmount'));
+        $configModelMock = $this->getModelMock('billsafe/config', array(
+            'getBillSafeMinAmount',
+            'getBillSafeMaxAmount',
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
-
-        $configModelMock = $this->getModelMock('billsafe/config', array('getBillSafeMaxAmount'));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMaxAmount')
             ->will($this->returnValue(10));
@@ -508,9 +526,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configModelMock = $this->getModelMock('billsafe/config', array(
             'getBillSafeMinAmount',
             'getBillSafeMaxAmount',
-            'isBillsafeExeedingMaxFeeAmount'
-            )
-        );
+            'isBillsafeExeedingMaxFeeAmount',
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
@@ -567,9 +584,8 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
             'getBillSafeMinAmount',
             'getBillSafeMaxAmount',
             'isBillsafeExeedingMaxFeeAmount',
-            'isBillsafeExeedingMinFeeAmount'
-            )
-        );
+            'isBillsafeExeedingMinFeeAmount',
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
@@ -630,8 +646,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configModelMock = $this->getModelMock('billsafe/config', array(
             'getBillSafeMinAmount',
             'getBillSafeMaxAmount',
-            )
-        );
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
@@ -690,8 +705,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configModelMock = $this->getModelMock('billsafe/config', array(
             'getBillSafeMinAmount',
             'getBillSafeMaxAmount',
-            )
-        );
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
@@ -699,7 +713,6 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configModelMock->expects($this->any())
             ->method('getBillSafeMaxAmount')
             ->will($this->returnValue(999));
-
         $this->replaceByMock('model', 'billsafe/config', $configModelMock);
 
         $paymentModelMock = $this->getModelMock('billsafe/payment', array(
@@ -734,7 +747,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
      */
     public function testIsAvailableReturnsFalseIfPrevalidateOrdercheckFails()
     {
-
+        $this->mockSessions();
         $tax = new Varien_Object();
         $tax->setValue(10);
         $quote = $this->getModelMock('sales/quote', array('getTotals'));
@@ -825,8 +838,7 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
         $configModelMock = $this->getModelMock('billsafe/config', array(
             'getBillSafeMinAmount',
             'getBillSafeMaxAmount',
-            )
-        );
+        ));
         $configModelMock->expects($this->any())
             ->method('getBillSafeMinAmount')
             ->will($this->returnValue(15));
@@ -973,10 +985,15 @@ class Netresearch_Billsafe_Test_Model_PaymentTest extends EcomDev_PHPUnit_Test_C
 
     protected function mockDataHelperForQuote()
     {
-        $dataHelperMock = $this->getHelperMock('billsafe/data', array('getStoreIdfromQuote'));
+        $dataHelperMock = $this->getHelperMock('billsafe/data',
+                                               array('getStoreIdfromQuote', 'getCustomerCompany'));
         $dataHelperMock->expects($this->any())
-            ->method('getStoreIdfromQuote')
-            ->will($this->returnValue(null));
+                       ->method('getStoreIdfromQuote')
+                       ->will($this->returnValue(null));
+        $dataHelperMock->expects($this->any())
+                       ->method('getCustomerCompany')
+                       ->will($this->returnValue(null));
+
         $this->replaceByMock('helper', 'billsafe/data', $dataHelperMock);
     }
 }

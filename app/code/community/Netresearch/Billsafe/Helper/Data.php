@@ -2,7 +2,7 @@
 class Netresearch_Billsafe_Helper_Data extends Mage_Payment_Helper_Data
 {
     const LOG_FILE_NAME = 'billsafe.log';
-
+    protected $_customerHelper = null;
     /**
      * Returns config model
      *
@@ -11,6 +11,25 @@ class Netresearch_Billsafe_Helper_Data extends Mage_Payment_Helper_Data
     public function getConfig()
     {
         return Mage::getSingleton('billsafe/config');
+    }
+
+    /**
+     * @return Netresearch_Billsafe_Helper_Customer|null
+     */
+    public function getCustomerHelper()
+    {
+        if(is_null($this->_customerHelper)){
+            $this->_customerHelper = Mage::helper('billsafe/customer');
+        }
+        return $this->_customerHelper;
+    }
+
+    /**
+     * @param Netresearch_Billsafe_Helper_Customer $customerHelper
+     */
+    public function setCustomerHelper(Netresearch_Billsafe_Helper_Customer $customerHelper)
+    {
+        $this->_customerHelper = $customerHelper;
     }
 
     /**
@@ -127,7 +146,7 @@ class Netresearch_Billsafe_Helper_Data extends Mage_Payment_Helper_Data
      */
     public function isFeeItem($item)
     {
-        $config = Mage::getSingleton('billsafe/config');
+        $config = $this->getConfig();
         $storeId = $this->getStoreIdfromQuote();
         return ($config->isPaymentFeeEnabled($storeId) && $config->getPaymentFeeSku($storeId) == $item->getSku());
     }
