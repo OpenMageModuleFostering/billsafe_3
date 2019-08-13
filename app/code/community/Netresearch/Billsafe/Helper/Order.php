@@ -858,11 +858,44 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
      */
     public function cancelOrder(Mage_Sales_Model_Order $order)
     {
-        $order->cancel();
-        if (!$order->isCanceled()) {
-            $order->setState(Mage_Sales_Model_Order::STATE_CANCELED, true);
+        try {
+            // works for 1.8 and 1.9
+            $order->registerCancellation();
+        } catch (Mage_Core_Exception $e) {
+            // exist for backward compatibility with Magento 1.7
+            $cancelState = Mage_Sales_Model_Order::STATE_CANCELED;
+            /** @var Mage_Sales_Model_Order_Item $item */
+            foreach ($order->getAllItems() as $item) {
+                if ($cancelState != Mage_Sales_Model_Order::STATE_PROCESSING && $item->getQtyToRefund()) {
+                    if ($item->getQtyToShip() > $item->getQtyToCancel()) {
+                        $cancelState = Mage_Sales_Model_Order::STATE_PROCESSING;
+                    } else {
+                        $cancelState = Mage_Sales_Model_Order::STATE_COMPLETE;
+                    }
+                }
+                $item->cancel();
+            }
+
+            $order->setSubtotalCanceled($order->getSubtotal() - $order->getSubtotalInvoiced());
+            $order->setBaseSubtotalCanceled($order->getBaseSubtotal() - $order->getBaseSubtotalInvoiced());
+
+            $order->setTaxCanceled($order->getTaxAmount() - $order->getTaxInvoiced());
+            $order->setBaseTaxCanceled($order->getBaseTaxAmount() - $order->getBaseTaxInvoiced());
+
+            $order->setShippingCanceled($order->getShippingAmount() - $order->getShippingInvoiced());
+            $order->setBaseShippingCanceled($order->getBaseShippingAmount() - $order->getBaseShippingInvoiced());
+
+            $order->setDiscountCanceled(abs($order->getDiscountAmount()) - $order->getDiscountInvoiced());
+            $order->setBaseDiscountCanceled(
+                abs($order->getBaseDiscountAmount()) - $order->getBaseDiscountInvoiced()
+            );
+
+            $order->setTotalCanceled($order->getGrandTotal() - $order->getTotalPaid());
+            $order->setBaseTotalCanceled($order->getBaseGrandTotal() - $order->getBaseTotalPaid());
+
+            $order->setState($cancelState, true);
         }
-        $order->save();
+	    $order->save();
     }
 
     public function cancelLastOrderAndRestoreCart(Mage_Checkout_Model_Session $session)

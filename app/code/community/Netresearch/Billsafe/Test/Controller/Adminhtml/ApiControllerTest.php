@@ -109,11 +109,12 @@ class Netresearch_Billsafe_Test_Controller_Adminhtml_ApiControllerTest
      * number of Mage_Adminhtml was never increased and thus cannot be utilized
      * for skipping this test.
      *
+     * UPDATE: least supported version is now CE 1.7.0.0
+     *
      * @test
      */
     public function pauseActionNotAllowedAcl()
     {
-        $this->markTestSkipped('Test fails in CE 1.6 and lower.');
         $this->performAdminLogin(false);
 
         $blockMock = $this->getBlockMock('index/adminhtml_notifications', array('getProcessesForReindex'));

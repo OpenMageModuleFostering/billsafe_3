@@ -53,6 +53,19 @@ tables:
      status:              'pending_payment'
      quote_id:            24
 
+   - entity_id:           15
+     increment_id:        100000015
+     shipping_address_id: 42
+     base_grand_total:    119.00
+     grand_total:         119.00
+     currency:            'EUR'
+     customer_gender:     1
+     shipping_method:     'flatrate_flatrate'
+     customer_email:      'hubertus.von.fuerstenberg@trash-mail.com'
+     state:               'payment_review'
+     status:              'payment_review'
+     quote_id:            24
+
   sales/quote:
    - entity_id:           1
      increment_id:        100000011
@@ -149,6 +162,11 @@ tables:
      additional_information:
      method:                  'billsafe'
 
+   - entity_id:               5
+     parent_id:               15
+     additional_information:
+     method:                  'billsafe'
+
   sales/invoice:
    - entity_id: 1
      order_id: 12
@@ -212,5 +230,17 @@ tables:
      qty_ordered: 2.0000
      qty_shipped: 2.0000
      qty_invoiced: 1.0000
+
+   - item_id: 6
+     order_id: 15
+     qty_ordered: 2.0000
+     qty_shipped: 0.0000
+     qty_invoiced: 0.0000
+
+   - item_id: 7
+     order_id: 15
+     qty_ordered: 2.0000
+     qty_shipped: 0.0000
+     qty_invoiced: 0.0000
 
   sales/order_status_history:

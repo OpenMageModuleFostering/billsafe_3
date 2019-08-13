@@ -1568,7 +1568,7 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
     public function cancelLastOrderAndRestoreCart()
     {
         $itemsCollection = array(Mage::getModel('sales/order_item'));
-        $orderIncrementId = '100000011';
+        $orderIncrementId = '100000015';
         $couponCode = 'foo.';
 
         // session mock
@@ -1601,13 +1601,11 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
 
 
         $orderMock = $this->getModelMock('sales/order', array(
-            'getItemsCollection',
             'hasCouponCode',
             'getCouponCode',
             'cancel',
             'isCanceled',
         ));
-        $orderMock->expects($this->any())->method('getItemsCollection')->will($this->returnValue($itemsCollection));
         $orderMock->expects($this->any())->method('hasCouponCode')->will($this->returnValue((bool)$couponCode));
         $orderMock->expects($this->any())->method('getCouponCode')->will($this->returnValue($couponCode));
         $orderMock->expects($this->any())->method('cancel')->will($this->returnSelf());
@@ -1624,4 +1622,45 @@ class Netresearch_Billsafe_Test_Helper_OrderTest
         $this->assertEquals(1, count($order->getStatusHistoryCollection()->getItems()));
         $this->assertEquals($couponCode, Mage::getSingleton('checkout/cart')->getQuote()->getCouponCode());
     }
+
+	/**
+	 * @test
+	 * @loadFixture ../../../var/fixtures/orders.yaml
+	 */
+	public function testIfCancelSucceed()
+	{
+		$orderIncrementId = '100000015';
+
+		// session mock
+		$sessionMock = $this->getModelMock(
+			'checkout/session', array(
+				                  'init',
+				                  'getLastRealOrderId',
+			                  )
+		);
+		$sessionMock->expects( $this->any() )
+		            ->method( 'getLastRealOrderId' )
+		            ->will( $this->returnValue( $orderIncrementId ) );
+		$this->replaceByMock( 'singleton', 'checkout/session', $sessionMock );
+
+		// order mock
+		$orderMock = $this->getModelMock(
+			'sales/order', array(
+				             'cancel',
+				             'isCanceled',
+			             )
+		);
+		$orderMock->expects( $this->any() )->method( 'cancel' )->will( $this->returnSelf() );
+		$orderMock->expects( $this->any() )->method( 'isCanceled' )->will( $this->returnValue( false ) );
+		$this->replaceByMock( 'model', 'sales/order', $orderMock );
+
+		/** @var Mage_Sales_Model_Order $orderModel */
+		$orderModel = Mage::getModel( 'sales/order' );
+		$order = $orderModel->loadByIncrementId( $orderIncrementId );
+		/* @var $orderHelper Netresearch_Billsafe_Helper_Order */
+		$orderHelper = Mage::helper( 'billsafe/order' );
+		$orderHelper->cancelOrder( $order );
+		$this->assertEquals( Mage_Sales_Model_Order::STATE_CANCELED, $order->getState() );
+		$this->assertEquals( 2, $order->getItemsCollection()->getFirstItem()->getData('qty_canceled') );
+	}
 }
