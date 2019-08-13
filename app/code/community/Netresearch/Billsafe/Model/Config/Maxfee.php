@@ -20,7 +20,7 @@ class Netresearch_Billsafe_Model_Config_Maxfee
         $config = $this->getTempConfig();
         if ($config->isPaymentFeeEnabled()) {
             $max = $this->getMaxFee();
-            if ($max < $this->getValue()) {
+            if ($max && ($max < $this->getValue())) {
                 $this->setValue($max);
             }
         }
@@ -47,18 +47,17 @@ class Netresearch_Billsafe_Model_Config_Maxfee
                 $msg = 'Maximum/Default fee is required entry!';
                 throw new Netresearch_Billsafe_Model_Config_Exception($dataHelper->__($msg));
             }
+
             $max = $this->getMaxFee();
             if (is_null($max)) {
-                throw new Netresearch_Billsafe_Model_Config_Exception($dataHelper->__(
-                    'No connection to BillSAFE. Please check your credentials.'
-                ));
+                $max = INF;
             }
+
             if ($max < $this->getValue()) {
-                $msg
-                    = 'Maximum/Default fee %s exceeded the allowed maximum by BillSAFE of %s.';
-                throw new Netresearch_Billsafe_Model_Config_Exception($dataHelper->__(
-                    $msg, $this->getValue(), $max
-                ));
+                $msg = 'Maximum/Default fee %s exceeded the allowed maximum by BillSAFE of %s.';
+                throw new Netresearch_Billsafe_Model_Config_Exception(
+                    $dataHelper->__($msg, $this->getValue(), $max)
+                );
             }
         }
         $this->restoreConfig();

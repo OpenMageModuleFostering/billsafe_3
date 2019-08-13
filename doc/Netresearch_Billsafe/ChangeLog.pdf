@@ -91,7 +91,7 @@ endobj
 % 'R8': class PDFInfo 
 8 0 obj
 << /Author ()
- /CreationDate (D:20140424174932-01'00')
+ /CreationDate (D:20140915152116-01'00')
  /Keywords ()
  /Producer (ReportLab http://www.reportlab.com)
  /Subject (\(unspecified\))
@@ -108,7 +108,7 @@ endobj
 % 'R10': class PDFStream 
 10 0 obj
 % page stream
-<< /Length 11053 >>
+<< /Length 11138 >>
 stream
 1 0 0 1 0 0 cm BT /F1 12 Tf 14.4 TL ET
 q
@@ -129,25 +129,25 @@ q
 1 0 0 1 62.69291 638.3307 cm
 Q
 q
-1 0 0 1 62.69291 122.3307 cm
+1 0 0 1 62.69291 110.3307 cm
 1 1 1 rg
-n 0 516 469.8898 -18 re f*
+n 0 528 469.8898 -18 re f*
 .878431 .878431 .878431 rg
-n 0 498 469.8898 -144 re f*
+n 0 510 469.8898 -66 re f*
 1 1 1 rg
-n 0 354 469.8898 -36 re f*
+n 0 444 469.8898 -144 re f*
 .878431 .878431 .878431 rg
-n 0 318 469.8898 -144 re f*
+n 0 300 469.8898 -36 re f*
 1 1 1 rg
-n 0 174 469.8898 -120 re f*
+n 0 264 469.8898 -144 re f*
 .878431 .878431 .878431 rg
-n 0 54 469.8898 -54 re f*
+n 0 120 469.8898 -120 re f*
 .960784 .960784 .862745 rg
-n 0 516 469.8898 -18 re f*
+n 0 528 469.8898 -18 re f*
 0 .533333 .603922 rg
 BT /F1 10 Tf 12 TL ET
 q
-1 0 0 1 6 501 cm
+1 0 0 1 6 513 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 46.73622 12 re f*
@@ -158,7 +158,7 @@ BT 1 0 0 1 0 4.82 Tm /F2 10 Tf 12 TL 2.52811 0 Td (Revision) Tj T* -2.52811 0 Td
 Q
 Q
 q
-1 0 0 1 64.73622 501 cm
+1 0 0 1 64.73622 513 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 46.73622 12 re f*
@@ -169,7 +169,7 @@ BT 1 0 0 1 0 4.82 Tm /F2 10 Tf 12 TL 12.53311 0 Td (Date) Tj T* -12.53311 0 Td E
 Q
 Q
 q
-1 0 0 1 123.4724 501 cm
+1 0 0 1 123.4724 513 cm
 q
 .960784 .960784 .862745 rg
 n 0 0 340.4173 12 re f*
@@ -181,34 +181,109 @@ Q
 Q
 0 0 0 rg
 q
-1 0 0 1 6 483 cm
+1 0 0 1 6 495 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (14.09.15) Tj T* ET
+Q
+Q
+q
+1 0 0 1 64.73622 495 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2014-09-15) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 495 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Improvements:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 489 cm
+Q
+q
+1 0 0 1 123.4724 489 cm
+Q
+q
+1 0 0 1 123.4724 477 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Cancel Payment Review Orders in CE 1.7) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 471 cm
+Q
+q
+1 0 0 1 123.4724 447 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 9 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 16.82 Tm /F1 10 Tf 12 TL .074665 Tw (Store configuration max amounts when no handling charges agreement) Tj T* 0 Tw (exists) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 447 cm
+Q
+q
+1 0 0 1 6 429 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (14.04.24) Tj T* ET
 Q
 Q
 q
-1 0 0 1 64.73622 483 cm
+1 0 0 1 64.73622 429 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2014-04-24) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 483 cm
+1 0 0 1 123.4724 429 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 477 cm
+1 0 0 1 123.4724 423 cm
 Q
 q
-1 0 0 1 123.4724 477 cm
+1 0 0 1 123.4724 423 cm
 Q
 q
-1 0 0 1 123.4724 465 cm
+1 0 0 1 123.4724 411 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -229,10 +304,10 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 459 cm
+1 0 0 1 123.4724 405 cm
 Q
 q
-1 0 0 1 123.4724 447 cm
+1 0 0 1 123.4724 393 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -253,10 +328,10 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 441 cm
+1 0 0 1 123.4724 387 cm
 Q
 q
-1 0 0 1 123.4724 429 cm
+1 0 0 1 123.4724 375 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -277,23 +352,23 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 429 cm
+1 0 0 1 123.4724 375 cm
 Q
 q
-1 0 0 1 123.4724 417 cm
+1 0 0 1 123.4724 363 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Improvements:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 411 cm
+1 0 0 1 123.4724 357 cm
 Q
 q
-1 0 0 1 123.4724 411 cm
+1 0 0 1 123.4724 357 cm
 Q
 q
-1 0 0 1 123.4724 387 cm
+1 0 0 1 123.4724 333 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -314,10 +389,10 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 381 cm
+1 0 0 1 123.4724 327 cm
 Q
 q
-1 0 0 1 123.4724 357 cm
+1 0 0 1 123.4724 303 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -338,37 +413,37 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 357 cm
+1 0 0 1 123.4724 303 cm
 Q
 q
-1 0 0 1 6 339 cm
+1 0 0 1 6 285 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (14.03.31) Tj T* ET
 Q
 Q
 q
-1 0 0 1 64.73622 339 cm
+1 0 0 1 64.73622 285 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2014-03-31) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 339 cm
+1 0 0 1 123.4724 285 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 333 cm
+1 0 0 1 123.4724 279 cm
 Q
 q
-1 0 0 1 123.4724 333 cm
+1 0 0 1 123.4724 279 cm
 Q
 q
-1 0 0 1 123.4724 321 cm
+1 0 0 1 123.4724 267 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -389,37 +464,37 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 321 cm
+1 0 0 1 123.4724 267 cm
 Q
 q
-1 0 0 1 6 303 cm
+1 0 0 1 6 249 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (14.03.27) Tj T* ET
 Q
 Q
 q
-1 0 0 1 64.73622 303 cm
+1 0 0 1 64.73622 249 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2014-03-27) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 303 cm
+1 0 0 1 123.4724 249 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 297 cm
+1 0 0 1 123.4724 243 cm
 Q
 q
-1 0 0 1 123.4724 297 cm
+1 0 0 1 123.4724 243 cm
 Q
 q
-1 0 0 1 123.4724 285 cm
+1 0 0 1 123.4724 231 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -440,10 +515,10 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 279 cm
+1 0 0 1 123.4724 225 cm
 Q
 q
-1 0 0 1 123.4724 255 cm
+1 0 0 1 123.4724 201 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -464,23 +539,23 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 255 cm
+1 0 0 1 123.4724 201 cm
 Q
 q
-1 0 0 1 123.4724 243 cm
+1 0 0 1 123.4724 189 cm
 q
 0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Improvements:) Tj T* ET
 Q
 Q
 q
-1 0 0 1 123.4724 237 cm
+1 0 0 1 123.4724 183 cm
 Q
 q
-1 0 0 1 123.4724 237 cm
+1 0 0 1 123.4724 183 cm
 Q
 q
-1 0 0 1 123.4724 213 cm
+1 0 0 1 123.4724 159 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -501,81 +576,6 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 207 cm
-Q
-q
-1 0 0 1 123.4724 195 cm
-0 0 0 rg
-BT /F1 10 Tf 12 TL ET
-q
-1 0 0 1 6 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
-Q
-Q
-q
-1 0 0 1 23 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Display API error messages in checkout session) Tj T* ET
-Q
-Q
-q
-Q
-Q
-q
-1 0 0 1 123.4724 189 cm
-Q
-q
-1 0 0 1 123.4724 177 cm
-0 0 0 rg
-BT /F1 10 Tf 12 TL ET
-q
-1 0 0 1 6 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
-Q
-Q
-q
-1 0 0 1 23 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Handle unavailable BillSAFE API) Tj T* ET
-Q
-Q
-q
-Q
-Q
-q
-1 0 0 1 123.4724 177 cm
-Q
-q
-1 0 0 1 6 159 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (13.12.13) Tj T* ET
-Q
-Q
-q
-1 0 0 1 64.73622 159 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2013-12-13) Tj T* ET
-Q
-Q
-q
-1 0 0 1 123.4724 159 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
-Q
-Q
-q
-1 0 0 1 123.4724 153 cm
-Q
-q
 1 0 0 1 123.4724 153 cm
 Q
 q
@@ -593,7 +593,7 @@ q
 1 0 0 1 23 -3 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Implement Onsite Checkout) Tj T* ET
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Display API error messages in checkout session) Tj T* ET
 Q
 Q
 q
@@ -617,6 +617,81 @@ q
 1 0 0 1 23 -3 cm
 q
 0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Handle unavailable BillSAFE API) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 123 cm
+Q
+q
+1 0 0 1 6 105 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (13.12.13) Tj T* ET
+Q
+Q
+q
+1 0 0 1 64.73622 105 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2013-12-13) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 105 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 99 cm
+Q
+q
+1 0 0 1 123.4724 99 cm
+Q
+q
+1 0 0 1 123.4724 87 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Implement Onsite Checkout) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 81 cm
+Q
+q
+1 0 0 1 123.4724 69 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
 BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Add payment information on MRG PDF print-outs) Tj T* ET
 Q
 Q
@@ -624,10 +699,10 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 117 cm
+1 0 0 1 123.4724 63 cm
 Q
 q
-1 0 0 1 123.4724 105 cm
+1 0 0 1 123.4724 51 cm
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
 q
@@ -648,88 +723,13 @@ q
 Q
 Q
 q
-1 0 0 1 123.4724 105 cm
-Q
-q
-1 0 0 1 123.4724 93 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Other:) Tj T* ET
-Q
-Q
-q
-1 0 0 1 123.4724 87 cm
-Q
-q
-1 0 0 1 123.4724 87 cm
-Q
-q
-1 0 0 1 123.4724 75 cm
-0 0 0 rg
-BT /F1 10 Tf 12 TL ET
-q
-1 0 0 1 6 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
-Q
-Q
-q
-1 0 0 1 23 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Allow BillSAFE payment method only for physical goods) Tj T* ET
-Q
-Q
-q
-Q
-Q
-q
-1 0 0 1 123.4724 69 cm
-Q
-q
-1 0 0 1 123.4724 57 cm
-0 0 0 rg
-BT /F1 10 Tf 12 TL ET
-q
-1 0 0 1 6 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
-Q
-Q
-q
-1 0 0 1 23 -3 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Refactor extension) Tj T* ET
-Q
-Q
-q
-Q
-Q
-q
-1 0 0 1 123.4724 57 cm
-Q
-q
-1 0 0 1 6 39 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (12.08.16) Tj T* ET
-Q
-Q
-q
-1 0 0 1 64.73622 39 cm
-q
-0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2012-08-16) Tj T* ET
-Q
+1 0 0 1 123.4724 51 cm
 Q
 q
 1 0 0 1 123.4724 39 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Other:) Tj T* ET
 Q
 Q
 q
@@ -753,7 +753,7 @@ q
 1 0 0 1 23 -3 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Fix partial invoicing with payment fee) Tj T* ET
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Allow BillSAFE payment method only for physical goods) Tj T* ET
 Q
 Q
 q
@@ -777,7 +777,7 @@ q
 1 0 0 1 23 -3 cm
 q
 0 0 0 rg
-BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Update documentation) Tj T* ET
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Refactor extension) Tj T* ET
 Q
 Q
 q
@@ -792,16 +792,16 @@ q
 0 0 0 RG
 .25 w
 n 0 0 m 469.8898 0 l S
-n 0 498 m 469.8898 498 l S
-n 0 354 m 469.8898 354 l S
-n 0 318 m 469.8898 318 l S
-n 0 174 m 469.8898 174 l S
-n 0 54 m 469.8898 54 l S
-n 58.73622 0 m 58.73622 516 l S
-n 117.4724 0 m 117.4724 516 l S
-n 0 516 m 469.8898 516 l S
-n 0 0 m 0 516 l S
-n 469.8898 0 m 469.8898 516 l S
+n 0 510 m 469.8898 510 l S
+n 0 444 m 469.8898 444 l S
+n 0 300 m 469.8898 300 l S
+n 0 264 m 469.8898 264 l S
+n 0 120 m 469.8898 120 l S
+n 58.73622 0 m 58.73622 528 l S
+n 117.4724 0 m 117.4724 528 l S
+n 0 528 m 469.8898 528 l S
+n 0 0 m 0 528 l S
+n 469.8898 0 m 469.8898 528 l S
 Q
 Q
 q
@@ -838,17 +838,94 @@ endobj
 % 'R11': class PDFStream 
 11 0 obj
 % page stream
-<< /Length 2647 >>
+<< /Length 3756 >>
 stream
 1 0 0 1 0 0 cm BT /F1 12 Tf 14.4 TL ET
 q
-1 0 0 1 62.69291 618.3307 cm
+1 0 0 1 62.69291 564.3307 cm
 1 1 1 rg
-n 0 90 469.8898 -54 re f*
+n 0 144 469.8898 -54 re f*
 .878431 .878431 .878431 rg
+n 0 90 469.8898 -54 re f*
+1 1 1 rg
 n 0 36 469.8898 -36 re f*
 0 0 0 rg
 BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 129 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (12.08.16) Tj T* ET
+Q
+Q
+q
+1 0 0 1 64.73622 129 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (2012-08-16) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 129 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Features:) Tj T* ET
+Q
+Q
+q
+1 0 0 1 123.4724 123 cm
+Q
+q
+1 0 0 1 123.4724 123 cm
+Q
+q
+1 0 0 1 123.4724 111 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Fix partial invoicing with payment fee) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 105 cm
+Q
+q
+1 0 0 1 123.4724 93 cm
+0 0 0 rg
+BT /F1 10 Tf 12 TL ET
+q
+1 0 0 1 6 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL 10.5 0 Td (\177) Tj T* -10.5 0 Td ET
+Q
+Q
+q
+1 0 0 1 23 -3 cm
+q
+0 0 0 rg
+BT 1 0 0 1 0 4.82 Tm /F1 10 Tf 12 TL (Update documentation) Tj T* ET
+Q
+Q
+q
+Q
+Q
+q
+1 0 0 1 123.4724 93 cm
+Q
 q
 1 0 0 1 6 75 cm
 q
@@ -980,20 +1057,21 @@ q
 1 j
 0 0 0 RG
 .25 w
+n 0 144 m 469.8898 144 l S
 n 0 90 m 469.8898 90 l S
 n 0 36 m 469.8898 36 l S
-n 58.73622 0 m 58.73622 90 l S
-n 117.4724 0 m 117.4724 90 l S
-n 0 0 m 0 90 l S
-n 469.8898 0 m 469.8898 90 l S
+n 58.73622 0 m 58.73622 144 l S
+n 117.4724 0 m 117.4724 144 l S
+n 0 0 m 0 144 l S
+n 469.8898 0 m 469.8898 144 l S
 n 0 0 m 469.8898 0 l S
 Q
 Q
 q
-1 0 0 1 62.69291 618.3307 cm
+1 0 0 1 62.69291 564.3307 cm
 Q
 q
-1 0 0 1 62.69291 618.3307 cm
+1 0 0 1 62.69291 564.3307 cm
 Q
 q
 1 0 0 1 426.3422 728.5039 cm
@@ -1064,19 +1142,19 @@ xref
 0000018391 00000 n
 0000018624 00000 n
 0000018738 00000 n
-0000029893 00000 n
-0000032643 00000 n
-0000032726 00000 n
-0000032832 00000 n
-0000032909 00000 n
+0000029978 00000 n
+0000033837 00000 n
+0000033920 00000 n
+0000034026 00000 n
+0000034103 00000 n
 trailer
 << /ID 
  % ReportLab generated PDF document -- digest (http://www.reportlab.com) 
- [(m\337g\271\270+\336\010\264\216| \235\035`D) (m\337g\271\270+\336\010\264\216| \235\035`D)] 
+ [(\245\201\374\344"@s-\222#\241!\257\256\266\264) (\245\201\374\344"@s-\222#\241!\257\256\266\264)] 
 
  /Info 8 0 R
  /Root 7 0 R
  /Size 16 >>
 startxref
-32956
+34150
 %%EOF

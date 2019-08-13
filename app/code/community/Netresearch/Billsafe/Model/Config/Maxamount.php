@@ -17,7 +17,7 @@ class Netresearch_Billsafe_Model_Config_Maxamount extends Netresearch_Billsafe_M
     {
         $config = $this->getTempConfig();
         $max = $this->getMax();
-        if ($max < $this->getValue()) {
+        if ($max && ($max < $this->getValue())) {
             $this->setValue($max);
         }
         $this->restoreConfig();
@@ -45,17 +45,17 @@ class Netresearch_Billsafe_Model_Config_Maxamount extends Netresearch_Billsafe_M
                 $msg = 'Maximum order amount is a required entry!';
                 throw new Netresearch_Billsafe_Model_Config_Exception(Mage::helper('billsafe')->__($msg));
             }
+
             $max = $this->getMax();
             if (is_null($max)) {
-                throw new Netresearch_Billsafe_Model_Config_Exception(Mage::helper('billsafe')->__(
-                        'No connection to BillSAFE. Please check your credentials.'
-                ));
+                $max = INF;
             }
+
             if ($max < $this->getValue()) {
                 $msg = 'Maximum order amount exceeds the allowed maximum by BillSAFE of %s.';
-                throw new Netresearch_Billsafe_Model_Config_Exception(Mage::helper('billsafe')->__(
-                        $msg, $max
-                ));
+                throw new Netresearch_Billsafe_Model_Config_Exception(
+                    Mage::helper('billsafe')->__($msg, $max)
+                );
             }
 
             $this->restoreConfig();

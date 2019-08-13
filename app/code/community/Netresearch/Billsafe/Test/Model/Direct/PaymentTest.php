@@ -15,15 +15,14 @@ class Netresearch_Billsafe_Test_Model_Direct_PaymentTest
             ->expects($this->any())
             ->method('getCreatedAt')
             ->will($this->returnValue($createdAtDate));
-        $this->replaceByMock('model', 'billsafe/direct_payment', $modelMock);
 
-        /* @var $directPayment Netresearch_Billsafe_Model_Direct_Payment */
-        $directPayment = Mage::getModel('billsafe/direct_payment');
+        $localeMock = Mage::app()->getLocale();
+        $localeMock->setLocale('de_DE');
 
         $date = new Zend_Date($createdAtDate, 'YYYY-MM-DD');
         $this->assertEquals(
-            $date->toString(Zend_Date::DATE_MEDIUM),
-            $directPayment->getCreatedAtFormatted()
+            $date->toString(Zend_Date::DATES, null, $localeMock->getLocale()),
+            $modelMock->getCreatedAtFormatted()
         );
     }
 }

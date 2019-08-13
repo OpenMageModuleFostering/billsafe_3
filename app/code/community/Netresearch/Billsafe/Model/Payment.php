@@ -519,7 +519,9 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      */
     public function cancel(Varien_Object $payment)
     {
-        $this->getClient()->void($payment->getOrder());
+        if ($payment->getOrder()->getState() !== Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
+            $this->getClient()->void($payment->getOrder());
+        }
         return parent::cancel($payment);
     }
 

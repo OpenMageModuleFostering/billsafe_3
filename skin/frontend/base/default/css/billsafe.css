@@ -11,3 +11,4 @@
 .form-list .billsafe-customer-dob .dob-year input.input-text { width:134px; }
 label[for='payment:month'].required { text-align: left; width: auto; }
 #label_billsafe_terms_accepted {width: auto; float: none; margin-left: 20px; display: block; text-align: left;}
+#label_billsafe_terms_accepted a {float: none; margin: 0;}
