@@ -1,6 +1,7 @@
 eav:
   catalog_product:
     - entity_id: 1
+      attribute_set_id: 4
       type_id: virtual
       sku: book
       name: Book
@@ -9,6 +10,7 @@ eav:
       url_key: book
 
     - entity_id: 2
+      attribute_set_id: 4
       type_id: simple
       sku: book
       name: Book

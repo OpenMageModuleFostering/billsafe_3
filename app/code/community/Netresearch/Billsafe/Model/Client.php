@@ -116,7 +116,7 @@ class Netresearch_Billsafe_Model_Client
     {
         $params = array_merge(
             Mage::helper('billsafe/order')->getPreparedOrderParams($order),
-            $this->getDefaultParams()
+            $this->getDefaultParams($order)
         );
 
         $this->_response = $this->getClient()->prepareOrder($params);
@@ -157,7 +157,7 @@ class Netresearch_Billsafe_Model_Client
 
     public function getHelper()
     {
-        return Mage::helper('billsafe');
+        return Mage::helper('billsafe/data');
     }
 
     /**
@@ -222,10 +222,12 @@ class Netresearch_Billsafe_Model_Client
      */
     public function getTransactionResult($token)
     {
+        $this->getConfig()->setScopeId($this->getHelper()->getStoreIdfromQuote());
         $params = array_merge(
             array('token' => $token),
             $this->getDefaultParams()
         );
+
         $this->_response = $this->getClient()->getTransactionResult($params);
         return $this;
     }
@@ -400,9 +402,9 @@ class Netresearch_Billsafe_Model_Client
      *
      * @return mixed
      */
-    public function prevalidateOrder($params)
+    public function prevalidateOrder($params, $quote = null)
     {
-        $params = array_merge($this->getDefaultParams(), $params);
+        $params = array_merge($this->getDefaultParams($quote), $params);
         return $this->getClient()->prevalidateOrder($params);
     }
 
@@ -413,10 +415,10 @@ class Netresearch_Billsafe_Model_Client
      *
      * @return mixed
      */
-    public function processOrder($params)
+    public function processOrder($params, $quote = null)
     {
         $result = array();
-        $params = array_merge($this->getDefaultParams(), $params);
+        $params = array_merge($this->getDefaultParams($quote), $params);
         $wsResult = $this->getClient()->processOrder($params);
         if (strtolower(trim($wsResult->ack)) != 'ok') {
             if (property_exists($wsResult, 'errorList')) {

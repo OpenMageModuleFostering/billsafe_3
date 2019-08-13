@@ -154,7 +154,7 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
     {
         try {
             $params = $this->prepareParamsForPrevalidateOrder($quote);
-            return Mage::getModel('billsafe/client')->prevalidateOrder($params);
+            return Mage::getModel('billsafe/client')->prevalidateOrder($params, $quote);
         } catch (Exception $e) {
             return new stdClass();
         }
@@ -172,7 +172,7 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
     public function processOrder($quote, $order)
     {
         $params = $this->prepareParamsForProcessOrder($quote, $order);
-        $result = Mage::getModel('billsafe/client')->processOrder($params);
+        $result = Mage::getModel('billsafe/client')->processOrder($params, $quote);
         return $result;
     }
 
@@ -643,12 +643,10 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
             'tax_amount' => 0
         );
         foreach ($order->getAllItems() as $item) {
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
-            if (false === $this->getHelper()->isFeeItem($item) && ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
-                || $product->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE)
-               )
-           {
-
+            if (!$this->getHelper()->isFeeItem($item)
+                && (($item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
+                    || $item->getProduct()->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE))
+            ) {
                 $qty = $item->getQtyOrdered() - $item->getQtyRefunded() - $item->getQtyCanceled();
                 $number = sprintf('%d-%s', $item->getItemId(), $item->getSku());
                 $data['data'][] = array(
@@ -774,15 +772,14 @@ class Netresearch_Billsafe_Helper_Order extends Mage_Payment_Helper_Data
      * @param Mage_Sales_Model_Order $order - order of shipping
      * @return boolean - all physical items of order are shipped
      */
-    protected function areAllPhysicalItemsShipped(Mage_Sales_Model_Order $order) {
+    protected function areAllPhysicalItemsShipped(Mage_Sales_Model_Order $order)
+    {
         $shipmentCollection = $order->getShipmentsCollection();
 
         foreach ($order->getAllItems() as $item) {
-            $product = Mage::getModel('catalog/product')->load($item->getProductId());
-            if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
-                    || $product->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE
-            )
-            {
+            if ( ($item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
+                || $item->getProduct()->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE)
+            ) {
                 continue;
             }
 

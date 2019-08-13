@@ -37,6 +37,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     public function setConfig($config)
     {
         $this->_config = $config;
+
         return $this;
     }
 
@@ -51,6 +52,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             return $this->_config;
         }
         $this->_config = Mage::getSingleton('billsafe/config');
+
         return $this->_config;
     }
 
@@ -70,6 +72,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if (null == $this->_dataHelper) {
             $this->_dataHelper = Mage::helper('billsafe/data');
         }
+
         return $this->_dataHelper;
     }
 
@@ -86,13 +89,12 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      */
     public function getOrderHelper()
     {
-        if(null == $this->_orderHelper){
+        if (null == $this->_orderHelper) {
             $this->_orderHelper = Mage::helper('billsafe/order');
         }
+
         return $this->_orderHelper;
     }
-
-
 
 
     /**
@@ -108,7 +110,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             && true === Mage::getSingleton('customer/session')->getData('authorize_failed')
             && $quote instanceof Mage_Sales_Model_Quote
             && $this->getOrderHelper()->generateAddressHash($quote->getBillingAddress())
-                == Mage::getSingleton('customer/session')->getData('billsafe_billingAddrHash')
+            == Mage::getSingleton('customer/session')->getData('billsafe_billingAddrHash')
         ) {
             return false;
         }
@@ -124,7 +126,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
 
         if ($quote) {
             // total amount must fit between min and max amount
-            $total = (float) $quote->getGrandTotal();
+            $total     = (float)$quote->getGrandTotal();
             $minAmount = $this->getConfig()->getBillSafeMinAmount($quote->getStoreId());
             $maxAmount = $this->getConfig()->getBillSafeMaxAmount($quote->getStoreId());
             if ($total < $minAmount || $total > $maxAmount) {
@@ -132,8 +134,8 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             }
             // Check Min and Fax of Fee
             if ($this->getConfig()->isPaymentFeeEnabled($quote->getStoreId())) {
-                $feeProduct = Mage::helper('paymentfee/data')->getUpdatedFeeProduct();
-                $avoidOverMax = $this->getConfig()->isBillsafeExeedingMaxFeeAmount($quote->getStoreId());
+                $feeProduct    = Mage::helper('paymentfee/data')->getUpdatedFeeProduct();
+                $avoidOverMax  = $this->getConfig()->isBillsafeExeedingMaxFeeAmount($quote->getStoreId());
                 $avoidBelowMin = $this->getConfig()->isBillsafeExeedingMinFeeAmount($quote->getStoreId());
 
                 if ($avoidOverMax && $feeProduct->getExceedsMaxAmount()) {
@@ -155,7 +157,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             $shippingAddress = $quote->getShippingAddress();
             if (false == $shippingAddress->getSameAsBilling()) {
                 $shippingData = $this->serializeAddress($shippingAddress);
-                $billingData = $this->serializeAddress($quote->getBillingAddress());
+                $billingData  = $this->serializeAddress($quote->getBillingAddress());
 
                 if (0 != strcmp($shippingData, $billingData)) {
                     return false;
@@ -177,7 +179,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
 
 
     /**
-     * check if alle quote items are virtuel
+     * check if all quote items are virtual
      *
      * @param Mage_Sales_Model_Quote $quote
      * @return boolean
@@ -188,9 +190,9 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if ($quote) {
             $virtualItemCounter = null;
             foreach ($quote->getAllItems() as $item) {
-                $product = Mage::getModel('catalog/product')->load($item->getProductId());
-                if($product->getTypeId()    == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
-                    ||$product->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE) {
+                if ($item->getProduct()->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_VIRTUAL
+                    || $item->getProduct()->getTypeId() == Mage_Downloadable_Model_Product_Type::TYPE_DOWNLOADABLE
+                ) {
                     ++$virtualItemCounter;
 
                 }
@@ -199,6 +201,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                 $result = true;
             }
         }
+
         return $result;
     }
 
@@ -213,22 +216,25 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     {
         try {
             if ($quote->getBillingAddress() instanceof Mage_Sales_Model_Quote_Address
-                && 0 < strlen($quote->getBillingAddress()->getPostcode())) {
+                && 0 < strlen($quote->getBillingAddress()->getPostcode())
+            ) {
                 $prevalidateResult = $this->getOrderHelper()->prevalidateOrder($quote);
                 if (strtolower(trim($prevalidateResult->ack)) != 'ok' ||
                     (property_exists($prevalidateResult, 'invoice') &&
-                        (bool) $prevalidateResult->invoice->isAvailable == false)
+                        (bool)$prevalidateResult->invoice->isAvailable == false)
                 ) {
                     if (property_exists($prevalidateResult, 'invoice')) {
                         $this->_unavailableMessage
                             = $prevalidateResult->invoice->message;
                     }
                     $this->_availableCheck = false;
+
                     return false;
                 }
             }
-            $this->_availableCheck = true;
+            $this->_availableCheck     = true;
             $this->_unavailableMessage = '';
+
             return true;
         } catch (Exception $e) {
             $this->getDataHelper()->log('Exception during prevalidateOrder call ' . $e->getMessage());
@@ -249,11 +255,11 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         $data = serialize(
             array(
                 'firstname' => $address->getFirstname(),
-                'lastname' => $address->getLastname(),
-                'company' => $address->getCompany(),
-                'street' => $address->getStreet(),
-                'city' => $address->getCity(),
-                'postcode' => $address->getPostcode(),
+                'lastname'  => $address->getLastname(),
+                'company'   => $address->getCompany(),
+                'street'    => $address->getStreet(),
+                'city'      => $address->getCity(),
+                'postcode'  => $address->getPostcode(),
             )
         );
 
@@ -293,6 +299,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         }
 
         $storeId = $this->getDataHelper()->getStoreIdfromQuote();
+
         return sprintf(
             '%s?token=%s',
             $this->getClient()->getConfig()->getGatewayUrl($storeId),
@@ -304,7 +311,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      * authorize
      *
      * @param Varien_Object $payment
-     * @param float         $amount
+     * @param float $amount
      *
      * @return void
      */
@@ -312,9 +319,9 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     {
 
         parent::authorize($payment, $amount);
-        $order = $this->getInfoInstance()->getOrder();
-        $quote = $order->getQuote();
-        $section = $this->getCheckoutSection($order);
+        $order        = $this->getInfoInstance()->getOrder();
+        $quote        = $order->getQuote();
+        $section      = $this->getCheckoutSection($order);
         $buyerMessage = "Please select another payment method!";
         if ($this->getOrderHelper()->isBillsafeOnsiteCheckout($quote)) {
             $result = array();
@@ -330,7 +337,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                             true
                         );
                         $addressHash = $this->getOrderHelper()
-                            ->generateAddressHash($quote->getBillingAddress());
+                                            ->generateAddressHash($quote->getBillingAddress());
                         Mage::getSingleton('customer/session')->setData(
                             'billsafe_billingAddrHash',
                             $addressHash
@@ -354,12 +361,12 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                         ->setTransactionId($result['transactionId'])
                         ->setTxnId($result['transactionId']);
                     $state = $this->getConfig()
-                        ->getBillSafeOrderStatus($order->getStoreId());
+                                  ->getBillSafeOrderStatus($order->getStoreId());
                     if ('pending' == $state) {
                         $state = Mage_Sales_Model_Order::STATE_PENDING_PAYMENT;
                     }
 
-                    $text = 'Successful BillSAFE payment.<br/>Transaction ID: ' .
+                    $text   = 'Successful BillSAFE payment.<br/>Transaction ID: ' .
                         '%d.<br/>BillSAFE Transaction Status: ACCEPTED.';
                     $notice = $this->getDataHelper()->__($text, $result['transactionId']);
                     $this->getOrderHelper()->getPaymentInstruction($order);
@@ -388,8 +395,8 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
             $token = null;
             try {
                 $token = $this->getClient()
-                    ->prepareOrder($this->getInfoInstance()->getOrder())
-                    ->getResponseToken();
+                              ->prepareOrder($this->getInfoInstance()->getOrder())
+                              ->getResponseToken();
             } catch (Exception $e) {
                 $this->getDataHelper()->log('error getting the token ' . $e->getMessage());
             }
@@ -416,7 +423,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      * Capture
      *
      * @param Varien_Object $payment
-     * @param float         $amount
+     * @param float $amount
      *
      * @return Netresearch_Billsafe_Model_Payment
      */
@@ -432,6 +439,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if ($this->areThereUninvoicedItems($payment)) {
             Mage::register(self::REGISTRY_ORDER_SHOULD_BE_CANCELLED, true);
         }
+
         return $this;
     }
 
@@ -457,11 +465,11 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         $invoices = $payment->getOrder()->getInvoiceCollection();
         foreach ($invoices as $invoice) {
             foreach ($invoice->getAllItems() as $item) {
-                $product = Mage::getModel('catalog/product')->load($item->getProductId());
+                $product       = Mage::getModel('catalog/product')->load($item->getProductId());
                 $parentIdArray = array();
                 if ($product->getTypeId() == Mage_Catalog_Model_Product_Type::TYPE_SIMPLE) {
                     $configurableProductModel = Mage::getModel('catalog/product_type_configurable');
-                    $parentIdArray = $configurableProductModel->getParentIdsByChild($product->getId());
+                    $parentIdArray            = $configurableProductModel->getParentIdsByChild($product->getId());
                 }
                 if ((0 < $product->getId() && $product->isVirtual()) ||
                     0 < count($parentIdArray)
@@ -476,23 +484,25 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
                 }
 
                 $orderItem = $item->getOrderItem();
-                if ((float) $orderItem->getQtyShipped() != (float) $orderItem->getQtyInvoiced()
+                if ((float)$orderItem->getQtyShipped() != (float)$orderItem->getQtyInvoiced()
                 ) {
                     return false;
                 }
             }
         }
+
         return true;
     }
 
     protected function areThereUninvoicedItems($payment)
     {
         foreach ($payment->getOrder()->getAllItems() as $item) {
-            if ((float) $item->getQtyOrdered() > (float) $item->getQtyInvoiced()
+            if ((float)$item->getQtyOrdered() > (float)$item->getQtyInvoiced()
             ) {
                 return true;
             }
         }
+
         return false;
     }
 
@@ -507,6 +517,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if (!$invoice) {
             return true;
         }
+
         return $invoice->getOrder()->getInvoiceCollection()->count() <= 1;
     }
 
@@ -522,6 +533,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         if ($payment->getOrder()->getState() !== Mage_Sales_Model_Order::STATE_PAYMENT_REVIEW) {
             $this->getClient()->void($payment->getOrder());
         }
+
         return parent::cancel($payment);
     }
 
@@ -529,7 +541,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
      * refund
      *
      * @param Varien_Object $payment
-     * @param float         $amount
+     * @param float $amount
      *
      * @return void
      */
@@ -538,6 +550,7 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
         $this->getClient()->updateArticleList(
             $payment->getOrder(), Netresearch_Billsafe_Model_Client::TYPE_RF
         );
+
         return parent::refund($payment, $amount);
     }
 
@@ -561,10 +574,12 @@ class Netresearch_Billsafe_Model_Payment extends Mage_Payment_Model_Method_Abstr
     protected function getCheckoutSection($order)
     {
         $section = 'shipping_method';
-        if (false === ($order->getShippingAddress() instanceof  Mage_Sales_Model_Order_Address)
-            || 0 === strlen(trim($order->getShippingAddress()->getPostcode()))) {
+        if (false === ($order->getShippingAddress() instanceof Mage_Sales_Model_Order_Address)
+            || 0 === strlen(trim($order->getShippingAddress()->getPostcode()))
+        ) {
             $section = 'billing';
         }
+
         return $section;
     }
 }
